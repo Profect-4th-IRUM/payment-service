@@ -1,6 +1,6 @@
 spring:
   datasource:
-    url: jdbc:postgresql://${LOCAL_POSTGRESQL_HOST:localhost}:${LOCAL_POSTGRESQL_PORT:5432}/${LOCAL_DB_NAME:paymentservice}
+    url: jdbc:postgresql://${LOCAL_POSTGRESQL_HOST:localhost}:${LOCAL_POSTGRESQL_PORT:5432}/${LOCAL_DB_NAME:paymentdb}
     username: ${LOCAL_POSTGRESQL_USERNAME:developer}
     password: ${LOCAL_POSTGRESQL_PASSWORD:1234}
     driver-class-name: org.postgresql.Driver

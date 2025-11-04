@@ -11,8 +11,8 @@ import com.irum.paymentservice.domain.product.application.service.ProductOptionV
 import com.irum.paymentservice.global.presentation.advice.exception.CommonException;
 import com.irum.paymentservice.global.presentation.advice.exception.errorcode.OrderErrorCode;
 import com.irum.paymentservice.global.presentation.advice.exception.errorcode.PaymentErrorCode;
-import com.irum.paymentservice.domain.payment.client.TosspaymentsClient;
-import com.irum.paymentservice.domain.payment.client.dto.TossPaymentsResponse;
+import com.irum.paymentservice.domain.payment.openfeign.toss.TosspaymentsClient;
+import com.irum.paymentservice.domain.payment.openfeign.toss.dto.TossPaymentsResponse;
 import com.irum.paymentservice.domain.payment.dto.request.PaymentRequest;
 import com.irum.paymentservice.domain.payment.dto.response.PaymentResponse;
 import com.irum.paymentservice.domain.payment.domain.entity.Payment;
@@ -40,18 +40,8 @@ public class PaymentService {
     private final PaymentRepository paymentRepository;
     private final OrderDetailRepository orderDetailRepository;
 
-    public Payment preparePayment(
-            Member member, int finalPaymentAmount, int discountAmount, PaymentCorp paymentCorp) {
-        Payment payment =
-                Payment.builder()
-                        .member(member)
-                        .amount(finalPaymentAmount)
-                        .totalDiscountAmount(discountAmount)
-                        .paymentStatus(PaymentStatus.PENDING)
-                        .paymentCorp(paymentCorp)
-                        .build();
-        return paymentRepository.save(payment);
-    }
+
+
 
     public PaymentResponse createPayment(PaymentRequest request) {
         // 프론트에서 테스트 할때 가격을 DB에있는 payment amount와 똑같이 해아함

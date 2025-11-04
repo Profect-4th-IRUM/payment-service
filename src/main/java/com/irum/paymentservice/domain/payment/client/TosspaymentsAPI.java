@@ -1,8 +1,8 @@
-package com.irum.paymentservice.payment.client;
+package com.irum.paymentservice.domain.payment.client;
 
-import com.irum.paymentservice.payment.client.config.FeignConfig;
-import com.irum.paymentservice.payment.client.dto.TossPaymentsRequest;
-import com.irum.paymentservice.payment.client.dto.TossPaymentsResponse;
+import com.irum.paymentservice.domain.payment.client.config.FeignConfig;
+import com.irum.paymentservice.domain.payment.client.dto.TossPaymentsRequest;
+import com.irum.paymentservice.domain.payment.client.dto.TossPaymentsResponse;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;

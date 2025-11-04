@@ -1,4 +1,4 @@
-package com.irum.paymentservice.payment.service;
+package com.irum.paymentservice.domain.payment.service;
 
 import com.irum.paymentservice.domain.coupon.application.service.AppliedCouponService;
 import com.irum.paymentservice.domain.member.domain.entity.Member;
@@ -11,14 +11,14 @@ import com.irum.paymentservice.domain.product.application.service.ProductOptionV
 import com.irum.paymentservice.global.presentation.advice.exception.CommonException;
 import com.irum.paymentservice.global.presentation.advice.exception.errorcode.OrderErrorCode;
 import com.irum.paymentservice.global.presentation.advice.exception.errorcode.PaymentErrorCode;
-import com.irum.paymentservice.payment.client.TosspaymentsClient;
-import com.irum.paymentservice.payment.client.dto.TossPaymentsResponse;
-import com.irum.paymentservice.payment.dto.request.PaymentRequest;
-import com.irum.paymentservice.payment.dto.response.PaymentResponse;
-import com.irum.paymentservice.payment.entity.Payment;
-import com.irum.paymentservice.payment.entity.enums.PaymentCorp;
-import com.irum.paymentservice.payment.entity.enums.PaymentStatus;
-import com.irum.paymentservice.payment.repository.PaymentRepository;
+import com.irum.paymentservice.domain.payment.client.TosspaymentsClient;
+import com.irum.paymentservice.domain.payment.client.dto.TossPaymentsResponse;
+import com.irum.paymentservice.domain.payment.dto.request.PaymentRequest;
+import com.irum.paymentservice.domain.payment.dto.response.PaymentResponse;
+import com.irum.paymentservice.domain.payment.domain.entity.Payment;
+import com.irum.paymentservice.domain.payment.domain.entity.enums.PaymentCorp;
+import com.irum.paymentservice.domain.payment.domain.entity.enums.PaymentStatus;
+import com.irum.paymentservice.domain.payment.domain.repository.PaymentRepository;
 import feign.FeignException;
 import java.util.List;
 import lombok.RequiredArgsConstructor;

@@ -1,4 +1,4 @@
-package com.irum.paymentservice.payment.dto.request;
+package com.irum.paymentservice.domain.payment.dto.request;
 
 import java.util.UUID;
 

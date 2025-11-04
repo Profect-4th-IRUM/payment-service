@@ -1,6 +1,6 @@
 spring:
   application:
-    name: paymentservice
+    name: payment-service
   profiles:
     active: local
     include:

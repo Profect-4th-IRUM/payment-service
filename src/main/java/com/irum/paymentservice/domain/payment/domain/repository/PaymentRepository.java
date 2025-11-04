@@ -1,6 +1,6 @@
-package com.irum.paymentservice.payment.repository;
+package com.irum.paymentservice.domain.payment.domain.repository;
 
-import com.irum.paymentservice.payment.entity.Payment;
+import com.irum.paymentservice.domain.payment.domain.entity.Payment;
 import java.util.List;
 import java.util.UUID;
 import org.springframework.data.jpa.repository.JpaRepository;

@@ -9,12 +9,12 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.irum.paymentservice.global.config.SecurityTestConfig;
-import com.irum.paymentservice.global.config.TestConfig;
 import com.irum.paymentservice.domain.payment.controller.PaymentController;
 import com.irum.paymentservice.domain.payment.dto.request.PaymentRequest;
 import com.irum.paymentservice.domain.payment.dto.response.PaymentResponse;
 import com.irum.paymentservice.domain.payment.service.PaymentService;
+import com.irum.paymentservice.global.config.SecurityTestConfig;
+import com.irum.paymentservice.global.config.TestConfig;
 import java.util.UUID;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

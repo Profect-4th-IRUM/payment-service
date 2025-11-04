@@ -1,4 +1,4 @@
-package com.irum.paymentservice.payment.client.config;
+package com.irum.paymentservice.domain.payment.client.config;
 
 import feign.Logger;
 import org.springframework.context.annotation.Bean;

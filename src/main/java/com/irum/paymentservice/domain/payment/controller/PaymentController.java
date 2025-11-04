@@ -1,8 +1,8 @@
-package com.irum.paymentservice.payment.controller;
+package com.irum.paymentservice.domain.payment.controller;
 
-import com.irum.paymentservice.payment.dto.request.PaymentRequest;
-import com.irum.paymentservice.payment.dto.response.PaymentResponse;
-import com.irum.paymentservice.payment.service.PaymentService;
+import com.irum.paymentservice.domain.payment.dto.request.PaymentRequest;
+import com.irum.paymentservice.domain.payment.dto.response.PaymentResponse;
+import com.irum.paymentservice.domain.payment.service.PaymentService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.PostMapping;

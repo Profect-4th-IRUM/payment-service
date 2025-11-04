@@ -8,6 +8,8 @@ import org.springframework.http.HttpStatus;
 @AllArgsConstructor
 public enum PaymentErrorCode implements BaseErrorCode {
     PAYMENT_ERROR(HttpStatus.BAD_GATEWAY, "토스 페이먼츠 결제 승인 실패"),
+    PAYMENT_NOT_FOUND(HttpStatus.NOT_FOUND, "결제 정보를 찾을 수 없습니다."),
+    PAYMENT_BAD_REQUEST(HttpStatus.BAD_REQUEST, "유효하지 않은 요청입니다")
     ;
 
     private final HttpStatus httpStatus;

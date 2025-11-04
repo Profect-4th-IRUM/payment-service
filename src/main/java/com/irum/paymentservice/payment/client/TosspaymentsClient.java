@@ -1,0 +1,33 @@
+package com.irum.paymentservice.payment.client;
+
+import com.irum.paymentservice.global.infrastructure.properties.TossProperties;
+import com.irum.paymentservice.payment.client.dto.TossPaymentsRequest;
+import com.irum.paymentservice.payment.client.dto.TossPaymentsResponse;
+import com.irum.paymentservice.payment.dto.request.PaymentRequest;
+import java.nio.charset.StandardCharsets;
+import java.util.Base64;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Component;
+
+@RequiredArgsConstructor
+@Component
+@Slf4j
+public class TosspaymentsClient {
+    private final TossProperties tossProperties;
+    private final TosspaymentsAPI tosspaymentsAPI;
+
+    public TossPaymentsResponse confirmPayment(PaymentRequest request, int paymentAmount) {
+        Base64.Encoder encoder = Base64.getEncoder();
+        byte[] encodedBytes =
+                encoder.encode((tossProperties.secretKey() + ":").getBytes(StandardCharsets.UTF_8));
+        String authorizations = "Basic " + new String(encodedBytes);
+
+        // request 제작
+        TossPaymentsRequest tossPaymentsRequest =
+                new TossPaymentsRequest(
+                        request.tossPaymentKey(), request.tossOrderId(), paymentAmount);
+
+        return tosspaymentsAPI.confirmPayment(authorizations, tossPaymentsRequest);
+    }
+}

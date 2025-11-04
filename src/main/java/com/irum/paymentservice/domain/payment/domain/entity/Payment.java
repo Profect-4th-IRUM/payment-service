@@ -1,12 +1,11 @@
 package com.irum.paymentservice.domain.payment.domain.entity;
 
 import com.irum.paymentservice.domain.coupon.domain.entity.AppliedCoupon;
-import com.irum.paymentservice.domain.member.domain.entity.Member;
-import com.irum.paymentservice.global.domain.BaseEntity;
-import com.irum.paymentservice.domain.payment.openfeign.toss.dto.TossPaymentsResponse;
 import com.irum.paymentservice.domain.payment.domain.entity.enums.PaymentCorp;
 import com.irum.paymentservice.domain.payment.domain.entity.enums.PaymentMethod;
 import com.irum.paymentservice.domain.payment.domain.entity.enums.PaymentStatus;
+import com.irum.paymentservice.domain.payment.openfeign.toss.dto.TossPaymentsResponse;
+import com.irum.paymentservice.global.domain.BaseEntity;
 import jakarta.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -46,7 +45,6 @@ public class Payment extends BaseEntity {
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private PaymentCorp paymentCorp;
-
 
     private UUID memberId;
 

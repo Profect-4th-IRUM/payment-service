@@ -1,24 +1,22 @@
 package com.irum.paymentservice.domain.payment.service;
 
 import com.irum.paymentservice.domain.coupon.application.service.AppliedCouponService;
-import com.irum.paymentservice.domain.member.domain.entity.Member;
 import com.irum.paymentservice.domain.order.domain.entity.Order;
 import com.irum.paymentservice.domain.order.domain.entity.OrderDetail;
 import com.irum.paymentservice.domain.order.domain.entity.enums.OrderStatus;
 import com.irum.paymentservice.domain.order.domain.repository.OrderDetailRepository;
 import com.irum.paymentservice.domain.order.domain.repository.OrderRepository;
+import com.irum.paymentservice.domain.payment.domain.entity.Payment;
+import com.irum.paymentservice.domain.payment.domain.entity.enums.PaymentStatus;
+import com.irum.paymentservice.domain.payment.domain.repository.PaymentRepository;
+import com.irum.paymentservice.domain.payment.dto.request.PaymentRequest;
+import com.irum.paymentservice.domain.payment.dto.response.PaymentResponse;
+import com.irum.paymentservice.domain.payment.openfeign.toss.TosspaymentsClient;
+import com.irum.paymentservice.domain.payment.openfeign.toss.dto.TossPaymentsResponse;
 import com.irum.paymentservice.domain.product.application.service.ProductOptionValueService;
 import com.irum.paymentservice.global.presentation.advice.exception.CommonException;
 import com.irum.paymentservice.global.presentation.advice.exception.errorcode.OrderErrorCode;
 import com.irum.paymentservice.global.presentation.advice.exception.errorcode.PaymentErrorCode;
-import com.irum.paymentservice.domain.payment.openfeign.toss.TosspaymentsClient;
-import com.irum.paymentservice.domain.payment.openfeign.toss.dto.TossPaymentsResponse;
-import com.irum.paymentservice.domain.payment.dto.request.PaymentRequest;
-import com.irum.paymentservice.domain.payment.dto.response.PaymentResponse;
-import com.irum.paymentservice.domain.payment.domain.entity.Payment;
-import com.irum.paymentservice.domain.payment.domain.entity.enums.PaymentCorp;
-import com.irum.paymentservice.domain.payment.domain.entity.enums.PaymentStatus;
-import com.irum.paymentservice.domain.payment.domain.repository.PaymentRepository;
 import feign.FeignException;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -39,9 +37,6 @@ public class PaymentService {
     private final ProductOptionValueService productOptionValueService;
     private final PaymentRepository paymentRepository;
     private final OrderDetailRepository orderDetailRepository;
-
-
-
 
     public PaymentResponse createPayment(PaymentRequest request) {
         // 프론트에서 테스트 할때 가격을 DB에있는 payment amount와 똑같이 해아함

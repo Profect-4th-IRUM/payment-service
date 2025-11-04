@@ -46,7 +46,7 @@ public class Payment extends BaseEntity {
     @Column(nullable = false)
     private PaymentCorp paymentCorp;
 
-    private UUID memberId;
+    private Long memberId;
 
     @OneToMany(mappedBy = "payment", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<AppliedCoupon> appliedCoupons = new ArrayList<>();

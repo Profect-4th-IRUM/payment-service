@@ -16,7 +16,7 @@ public class PaymentInternalService {
     private final PaymentRepository paymentRepository;
 
     public UUID preparePayment(PaymentInternalRequest request) {
-        UUID memberId = UUID.randomUUID();
+        Long memberId = 1L;
 
         Payment payment =
                 Payment.builder()

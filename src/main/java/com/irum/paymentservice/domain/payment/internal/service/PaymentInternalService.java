@@ -2,13 +2,14 @@ package com.irum.paymentservice.domain.payment.internal.service;
 
 import com.irum.paymentservice.domain.payment.domain.entity.Payment;
 import com.irum.paymentservice.domain.payment.domain.repository.PaymentRepository;
-import com.irum.paymentservice.domain.payment.internal.dto.request.PaymentInternalRequest;
+import com.irum.paymentservice.domain.payment.internal.dto.request.PaymentStatusUpdateRequest;
+import com.irum.paymentservice.domain.payment.internal.dto.response.PaymentInternalResponse;
+import com.irum.paymentservice.global.presentation.advice.exception.CommonException;
+import com.irum.paymentservice.global.presentation.advice.exception.errorcode.PaymentErrorCode;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestBody;
 
-import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -17,7 +18,13 @@ import java.util.UUID;
 public class PaymentInternalService {
     private final PaymentRepository paymentRepository;
 
-    public int updatePaymentFailed(PaymentInternalRequest request) {
+    public PaymentInternalResponse getPayment(UUID paymentId){
+        Payment payment = paymentRepository.findById(paymentId).orElseThrow(
+                () -> new CommonException(PaymentErrorCode.PAYMENT_NOT_FOUND)
+        );
+        return PaymentInternalResponse.from(payment);
+    }
+    public int updatePaymentFailed(PaymentStatusUpdateRequest request) {
         return paymentRepository.updateStatusToFailedByIds(request.paymetIdList());
     }
 }

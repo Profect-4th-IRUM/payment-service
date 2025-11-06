@@ -12,7 +12,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface PaymentRepository extends JpaRepository<Payment, UUID> {
 
-    //실제 값이 변경된 행의 개수가 반환
+    // 실제 값이 변경된 행의 개수가 반환
     @Modifying(clearAutomatically = true)
     @Query("UPDATE Payment p SET p.paymentStatus = 'FAILED' WHERE p.paymentId IN :paymentIds")
     int updateStatusToFailedByIds(@Param("paymentIds") List<UUID> paymentIds);

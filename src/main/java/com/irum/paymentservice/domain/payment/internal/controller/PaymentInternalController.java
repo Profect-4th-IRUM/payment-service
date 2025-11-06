@@ -3,10 +3,9 @@ package com.irum.paymentservice.domain.payment.internal.controller;
 import com.irum.paymentservice.domain.payment.internal.dto.request.PaymentStatusUpdateRequest;
 import com.irum.paymentservice.domain.payment.internal.dto.response.PaymentInternalResponse;
 import com.irum.paymentservice.domain.payment.internal.service.PaymentInternalService;
+import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.UUID;
 
 @RestController
 @RequiredArgsConstructor
@@ -15,7 +14,7 @@ public class PaymentInternalController {
     private final PaymentInternalService paymentInternalService;
 
     @GetMapping("/{paymentId}")
-    public PaymentInternalResponse getPayment(@PathVariable UUID paymentId){
+    public PaymentInternalResponse getPayment(@PathVariable UUID paymentId) {
         return paymentInternalService.getPayment(paymentId);
     }
 
@@ -23,6 +22,4 @@ public class PaymentInternalController {
     public int updatePaymentFailed(@RequestBody PaymentStatusUpdateRequest request) {
         return paymentInternalService.updatePaymentFailed(request);
     }
-
-
 }

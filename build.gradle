@@ -117,6 +117,9 @@ dependencies {
     testImplementation 'org.springframework.security:spring-security-test'
     testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+
+    // Spring loadbalancer
+    implementation 'org.springframework.cloud:spring-cloud-starter-loadbalancer'
 }
 
 test {

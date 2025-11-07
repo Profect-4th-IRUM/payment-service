@@ -1,12 +1,11 @@
 package com.irum.paymentservice.domain.payment.domain.entity;
 
 import com.irum.paymentservice.domain.coupon.domain.entity.AppliedCoupon;
-import com.irum.paymentservice.domain.member.domain.entity.Member;
-import com.irum.paymentservice.global.domain.BaseEntity;
-import com.irum.paymentservice.domain.payment.client.dto.TossPaymentsResponse;
 import com.irum.paymentservice.domain.payment.domain.entity.enums.PaymentCorp;
 import com.irum.paymentservice.domain.payment.domain.entity.enums.PaymentMethod;
 import com.irum.paymentservice.domain.payment.domain.entity.enums.PaymentStatus;
+import com.irum.paymentservice.domain.payment.openfeign.toss.dto.TossPaymentsResponse;
+import com.irum.paymentservice.global.domain.BaseEntity;
 import jakarta.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -47,9 +46,7 @@ public class Payment extends BaseEntity {
     @Column(nullable = false)
     private PaymentCorp paymentCorp;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "member_id")
-    private Member member;
+    private Long memberId;
 
     @OneToMany(mappedBy = "payment", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<AppliedCoupon> appliedCoupons = new ArrayList<>();

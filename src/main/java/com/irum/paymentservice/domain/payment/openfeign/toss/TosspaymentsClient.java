@@ -1,9 +1,9 @@
-package com.irum.paymentservice.domain.payment.client;
+package com.irum.paymentservice.domain.payment.openfeign.toss;
 
-import com.irum.paymentservice.global.infrastructure.properties.TossProperties;
-import com.irum.paymentservice.domain.payment.client.dto.TossPaymentsRequest;
-import com.irum.paymentservice.domain.payment.client.dto.TossPaymentsResponse;
 import com.irum.paymentservice.domain.payment.dto.request.PaymentRequest;
+import com.irum.paymentservice.domain.payment.openfeign.toss.dto.TossPaymentsRequest;
+import com.irum.paymentservice.domain.payment.openfeign.toss.dto.TossPaymentsResponse;
+import com.irum.paymentservice.global.infrastructure.properties.TossProperties;
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 import lombok.RequiredArgsConstructor;

@@ -25,7 +25,7 @@ public class MemberUtil {
             throw new CommonException(GlobalErrorCode.EMPTY_REQUEST);
     }
 
-    private Long getCurrentMemberId() {
+    public Long getCurrentMemberId() {
         return MemberAuthContext.getMemberId();
     } // 로그인 된 아이디 반환
 }

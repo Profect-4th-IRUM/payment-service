@@ -9,6 +9,8 @@ import com.irum.paymentservice.domain.payment.internal.dto.request.PaymentStatus
 import com.irum.paymentservice.domain.payment.internal.dto.response.PaymentInternalResponse;
 import com.irum.paymentservice.global.exception.errorcode.PaymentErrorCode;
 import java.util.UUID;
+
+import com.irum.paymentservice.global.util.MemberUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -20,9 +22,10 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public class PaymentInternalService {
     private final PaymentRepository paymentRepository;
+    private final MemberUtil memberUtil;
 
     public UUID preparePayment(PaymentInternalRequest request) {
-        Long memberId = 1L;
+        Long memberId = memberUtil.getCurrentMemberId();
 
         Payment payment =
                 Payment.builder()

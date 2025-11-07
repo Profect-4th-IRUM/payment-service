@@ -1,6 +1,7 @@
 package com.irum.paymentservice.domain.payment.service;
 
 import com.irum.global.advice.exception.CommonException;
+import com.irum.paymentservice.global.util.MemberUtil;
 import com.irum.paymentservice.openfeign.order.OrderClient;
 import com.irum.paymentservice.openfeign.order.dto.enums.OrderStatus;
 import com.irum.paymentservice.openfeign.toss.TosspaymentsClient;
@@ -24,6 +25,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class PaymentService {
     private final TosspaymentsClient tosspaymentsClient;
     private final PaymentRepository paymentRepository;
+    private final MemberUtil memberUtil;
     private final OrderClient orderClient;
 
     public PaymentResponse createPayment(PaymentRequest request) {
@@ -31,6 +33,9 @@ public class PaymentService {
                 paymentRepository
                         .findById(request.paymentId())
                         .orElseThrow(() -> new CommonException(PaymentErrorCode.PAYMENT_ERROR));
+
+        // 접근성 확인
+        memberUtil.assertMemberResourceAccess(payment.getMemberId());
 
         // pending 상태인지 확인 (이미 처리된 결제 등)
         if (!payment.getPaymentStatus().equals(PaymentStatus.PENDING)) {

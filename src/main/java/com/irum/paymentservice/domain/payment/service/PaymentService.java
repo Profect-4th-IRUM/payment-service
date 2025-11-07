@@ -10,8 +10,6 @@ import com.irum.paymentservice.domain.payment.domain.repository.PaymentRepositor
 import com.irum.paymentservice.domain.payment.dto.request.PaymentRequest;
 import com.irum.paymentservice.domain.payment.dto.response.PaymentResponse;
 import com.irum.paymentservice.global.presentation.advice.exception.CommonException;
-import com.irum.paymentservice.global.presentation.advice.exception.errorcode.OrderErrorCode;
-import com.irum.paymentservice.global.presentation.advice.exception.CommonException;
 import com.irum.paymentservice.global.presentation.advice.exception.errorcode.PaymentErrorCode;
 import feign.FeignException;
 import lombok.RequiredArgsConstructor;

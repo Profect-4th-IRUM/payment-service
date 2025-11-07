@@ -5,8 +5,6 @@ import com.irum.paymentservice.domain.payment.client.order.dto.enums.OrderStatus
 import com.irum.paymentservice.domain.payment.client.toss.TosspaymentsClient;
 import com.irum.paymentservice.domain.payment.client.toss.dto.TossPaymentsResponse;
 import com.irum.paymentservice.domain.payment.domain.entity.Payment;
-import com.irum.paymentservice.domain.payment.domain.entity.enums.PaymentCorp;
-import com.irum.paymentservice.domain.payment.domain.entity.Payment;
 import com.irum.paymentservice.domain.payment.domain.entity.enums.PaymentStatus;
 import com.irum.paymentservice.domain.payment.domain.repository.PaymentRepository;
 import com.irum.paymentservice.domain.payment.dto.request.PaymentRequest;

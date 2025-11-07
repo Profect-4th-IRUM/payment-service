@@ -8,10 +8,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 
-@FeignClient(
-        name = "TOSS",
-        url = "https://api.tosspayments.com",
-        configuration = FeignConfig.class)
+@FeignClient(name = "TOSS", url = "https://api.tosspayments.com", configuration = FeignConfig.class)
 public interface TosspaymentsAPI {
     @PostMapping("/v1/payments/confirm")
     TossPaymentsResponse confirmPayment(

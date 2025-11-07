@@ -6,10 +6,7 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.scheduling.annotation.EnableScheduling;
 
 @SpringBootApplication
-@EnableFeignClients(basePackages = {
-        "com.irum.paymentservice.openfeign",
-        "openfeign"
-})
+@EnableFeignClients(basePackages = {"com.irum.paymentservice.openfeign", "openfeign"})
 @EnableScheduling
 public class PaymentServiceApplication {
 

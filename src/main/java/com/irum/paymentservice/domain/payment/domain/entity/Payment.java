@@ -1,12 +1,11 @@
 package com.irum.paymentservice.domain.payment.domain.entity;
 
 import com.irum.global.domain.BaseEntity;
-import com.irum.paymentservice.openfeign.toss.dto.TossPaymentsResponse;
 import com.irum.paymentservice.domain.payment.domain.entity.enums.PaymentCorp;
 import com.irum.paymentservice.domain.payment.domain.entity.enums.PaymentMethod;
 import com.irum.paymentservice.domain.payment.domain.entity.enums.PaymentStatus;
+import com.irum.paymentservice.openfeign.toss.dto.TossPaymentsResponse;
 import jakarta.persistence.*;
-
 import java.util.UUID;
 import lombok.*;
 import org.hibernate.annotations.SQLRestriction;

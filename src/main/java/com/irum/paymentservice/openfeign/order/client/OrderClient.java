@@ -1,5 +1,6 @@
-package com.irum.paymentservice.openfeign.order;
+package com.irum.paymentservice.openfeign.order.client;
 
+import com.irum.paymentservice.openfeign.order.OrderAPI;
 import com.irum.paymentservice.openfeign.order.dto.enums.OrderStatus;
 import com.irum.paymentservice.openfeign.order.dto.request.UpdateOrderStatusFailedRequest;
 import com.irum.paymentservice.openfeign.order.dto.request.UpdateOrderStatusPreparingRequest;

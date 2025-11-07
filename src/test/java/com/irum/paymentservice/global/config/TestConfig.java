@@ -1,26 +1,26 @@
-//package com.irum.paymentservice.global.config;
+// package com.irum.paymentservice.global.config;
 //
-//import com.irum.paymentservice.domain.auth.application.service.AuthService;
-//import com.irum.paymentservice.domain.auth.application.service.JwtTokenService;
-//import com.irum.paymentservice.domain.cart.application.service.CartService;
-//import com.irum.paymentservice.domain.category.application.service.CategoryService;
-//import com.irum.paymentservice.domain.deliveryaddress.application.service.DeliveryAddressService;
-//import com.irum.paymentservice.domain.discount.application.service.DiscountService;
-//import com.irum.paymentservice.domain.member.application.service.ManagerService;
-//import com.irum.paymentservice.domain.member.application.service.MemberService;
-//import com.irum.paymentservice.domain.order.application.service.CustomerOrderService;
-//import com.irum.paymentservice.domain.order.application.service.OwnerOrderService;
-//import com.irum.paymentservice.domain.order.application.service.SalesService;
-//import com.irum.paymentservice.domain.product.application.service.ProductImageService;
-//import com.irum.paymentservice.domain.refund.application.service.RefundService;
-//import com.irum.paymentservice.domain.review.application.service.ReviewService;
-//import com.irum.paymentservice.global.util.CookieUtil;
-//import org.mockito.Mockito;
-//import org.springframework.boot.test.context.TestConfiguration;
-//import org.springframework.context.annotation.Bean;
+// import com.irum.paymentservice.domain.auth.application.service.AuthService;
+// import com.irum.paymentservice.domain.auth.application.service.JwtTokenService;
+// import com.irum.paymentservice.domain.cart.application.service.CartService;
+// import com.irum.paymentservice.domain.category.application.service.CategoryService;
+// import com.irum.paymentservice.domain.deliveryaddress.application.service.DeliveryAddressService;
+// import com.irum.paymentservice.domain.discount.application.service.DiscountService;
+// import com.irum.paymentservice.domain.member.application.service.ManagerService;
+// import com.irum.paymentservice.domain.member.application.service.MemberService;
+// import com.irum.paymentservice.domain.order.application.service.CustomerOrderService;
+// import com.irum.paymentservice.domain.order.application.service.OwnerOrderService;
+// import com.irum.paymentservice.domain.order.application.service.SalesService;
+// import com.irum.paymentservice.domain.product.application.service.ProductImageService;
+// import com.irum.paymentservice.domain.refund.application.service.RefundService;
+// import com.irum.paymentservice.domain.review.application.service.ReviewService;
+// import com.irum.paymentservice.global.util.CookieUtil;
+// import org.mockito.Mockito;
+// import org.springframework.boot.test.context.TestConfiguration;
+// import org.springframework.context.annotation.Bean;
 //
-//@TestConfiguration
-//public class TestConfig {
+// @TestConfiguration
+// public class TestConfig {
 //    @Bean
 //    public MemberService memberService() {
 //        return Mockito.mock(MemberService.class);
@@ -93,4 +93,4 @@
 //    public ProductImageService productImageService() {
 //        return Mockito.mock(ProductImageService.class);
 //    }
-//}
+// }

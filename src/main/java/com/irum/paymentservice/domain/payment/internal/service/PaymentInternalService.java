@@ -8,9 +8,8 @@ import com.irum.paymentservice.domain.payment.internal.dto.request.PaymentIntern
 import com.irum.paymentservice.domain.payment.internal.dto.request.PaymentStatusUpdateRequest;
 import com.irum.paymentservice.domain.payment.internal.dto.response.PaymentInternalResponse;
 import com.irum.paymentservice.global.exception.errorcode.PaymentErrorCode;
-import java.util.UUID;
-
 import com.irum.paymentservice.global.util.MemberUtil;
+import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;

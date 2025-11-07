@@ -1,17 +1,17 @@
 package com.irum.paymentservice.domain.payment.service;
 
 import com.irum.global.advice.exception.CommonException;
-import com.irum.paymentservice.global.util.MemberUtil;
-import com.irum.paymentservice.openfeign.order.OrderClient;
-import com.irum.paymentservice.openfeign.order.dto.enums.OrderStatus;
-import com.irum.paymentservice.openfeign.toss.TosspaymentsClient;
-import com.irum.paymentservice.openfeign.toss.dto.TossPaymentsResponse;
 import com.irum.paymentservice.domain.payment.domain.entity.Payment;
 import com.irum.paymentservice.domain.payment.domain.entity.enums.PaymentStatus;
 import com.irum.paymentservice.domain.payment.domain.repository.PaymentRepository;
 import com.irum.paymentservice.domain.payment.dto.request.PaymentRequest;
 import com.irum.paymentservice.domain.payment.dto.response.PaymentResponse;
 import com.irum.paymentservice.global.exception.errorcode.PaymentErrorCode;
+import com.irum.paymentservice.global.util.MemberUtil;
+import com.irum.paymentservice.openfeign.order.client.OrderClient;
+import com.irum.paymentservice.openfeign.order.dto.enums.OrderStatus;
+import com.irum.paymentservice.openfeign.toss.client.TosspaymentsClient;
+import com.irum.paymentservice.openfeign.toss.dto.TossPaymentsResponse;
 import feign.FeignException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

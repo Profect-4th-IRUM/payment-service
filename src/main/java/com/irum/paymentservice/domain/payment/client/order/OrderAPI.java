@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 @FeignClient(
-        name = "order-api",
+        name = "ORDER-SERVICE",
         url = "order-service/internal/orders/",
         configuration = FeignConfig.class)
 public interface OrderAPI {

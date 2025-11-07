@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 
 @FeignClient(
-        name = "toss-api",
+        name = "TOSS",
         url = "https://api.tosspayments.com",
         configuration = FeignConfig.class)
 public interface TosspaymentsAPI {

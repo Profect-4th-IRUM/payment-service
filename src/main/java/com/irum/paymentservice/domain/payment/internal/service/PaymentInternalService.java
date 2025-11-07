@@ -21,18 +21,6 @@ import org.springframework.transaction.annotation.Transactional;
 public class PaymentInternalService {
     private final PaymentRepository paymentRepository;
 
-    public PaymentInternalResponse getPayment(UUID paymentId) {
-        Payment payment =
-                paymentRepository
-                        .findById(paymentId)
-                        .orElseThrow(() -> new CommonException(PaymentErrorCode.PAYMENT_NOT_FOUND));
-        return PaymentInternalResponse.from(payment);
-    }
-
-    public int updatePaymentFailed(PaymentStatusUpdateRequest request) {
-        return paymentRepository.updateStatusToFailedByIds(request.paymetIdList());
-    }
-
     public UUID preparePayment(PaymentInternalRequest request) {
         Long memberId = 1L;
 
@@ -46,5 +34,17 @@ public class PaymentInternalService {
                         .build();
         Payment savedPayment = paymentRepository.save(payment);
         return savedPayment.getPaymentId();
+    }
+
+    public PaymentInternalResponse getPayment(UUID paymentId) {
+        Payment payment =
+                paymentRepository
+                        .findById(paymentId)
+                        .orElseThrow(() -> new CommonException(PaymentErrorCode.PAYMENT_NOT_FOUND));
+        return PaymentInternalResponse.from(payment);
+    }
+
+    public int updatePaymentFailed(PaymentStatusUpdateRequest request) {
+        return paymentRepository.updateStatusToFailedByIds(request.paymetIdList());
     }
 }

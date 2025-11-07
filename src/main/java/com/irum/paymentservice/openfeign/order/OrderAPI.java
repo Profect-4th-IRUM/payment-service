@@ -1,8 +1,8 @@
-package com.irum.paymentservice.domain.payment.client.order;
+package com.irum.paymentservice.openfeign.order;
 
-import com.irum.paymentservice.domain.payment.client.config.FeignConfig;
-import com.irum.paymentservice.domain.payment.client.order.dto.request.UpdateOrderStatusFailedRequest;
-import com.irum.paymentservice.domain.payment.client.order.dto.request.UpdateOrderStatusPreparingRequest;
+import com.irum.paymentservice.openfeign.config.FeignConfig;
+import com.irum.paymentservice.openfeign.order.dto.request.UpdateOrderStatusFailedRequest;
+import com.irum.paymentservice.openfeign.order.dto.request.UpdateOrderStatusPreparingRequest;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.RequestBody;

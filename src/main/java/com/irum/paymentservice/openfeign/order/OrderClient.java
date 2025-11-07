@@ -1,8 +1,8 @@
-package com.irum.paymentservice.domain.payment.client.order;
+package com.irum.paymentservice.openfeign.order;
 
-import com.irum.paymentservice.domain.payment.client.order.dto.enums.OrderStatus;
-import com.irum.paymentservice.domain.payment.client.order.dto.request.UpdateOrderStatusFailedRequest;
-import com.irum.paymentservice.domain.payment.client.order.dto.request.UpdateOrderStatusPreparingRequest;
+import com.irum.paymentservice.openfeign.order.dto.enums.OrderStatus;
+import com.irum.paymentservice.openfeign.order.dto.request.UpdateOrderStatusFailedRequest;
+import com.irum.paymentservice.openfeign.order.dto.request.UpdateOrderStatusPreparingRequest;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;

@@ -1,5 +1,6 @@
 package com.irum.paymentservice.domain.payment.internal.service;
 
+import com.irum.global.advice.exception.CommonException;
 import com.irum.paymentservice.domain.payment.domain.entity.Payment;
 import com.irum.paymentservice.domain.payment.domain.entity.enums.PaymentStatus;
 import com.irum.paymentservice.domain.payment.domain.repository.PaymentRepository;

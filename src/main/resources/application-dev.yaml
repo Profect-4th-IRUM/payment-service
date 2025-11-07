@@ -1,8 +1,8 @@
 spring:
   datasource:
     url: jdbc:postgresql://${RDS_ENDPOINT:localhost}:${RDS_PORT:5432}/${RDS_DB:paymentservice}
-    username: ${RDS_USERNAME:paymentservice}
-    password: ${RDS_PASSWORD:paymentservice123}
+    username: ${RDS_USERNAME:developer}
+    password: ${RDS_PASSWORD:1234}
     driver-class-name: org.postgresql.Driver
   jpa:
     show-sql: false

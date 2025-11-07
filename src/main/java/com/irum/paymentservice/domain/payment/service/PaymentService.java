@@ -1,9 +1,10 @@
 package com.irum.paymentservice.domain.payment.service;
 
-import com.irum.paymentservice.domain.payment.client.order.OrderClient;
-import com.irum.paymentservice.domain.payment.client.order.dto.enums.OrderStatus;
-import com.irum.paymentservice.domain.payment.client.toss.TosspaymentsClient;
-import com.irum.paymentservice.domain.payment.client.toss.dto.TossPaymentsResponse;
+import com.irum.global.advice.exception.CommonException;
+import com.irum.paymentservice.openfeign.order.OrderClient;
+import com.irum.paymentservice.openfeign.order.dto.enums.OrderStatus;
+import com.irum.paymentservice.openfeign.toss.TosspaymentsClient;
+import com.irum.paymentservice.openfeign.toss.dto.TossPaymentsResponse;
 import com.irum.paymentservice.domain.payment.domain.entity.Payment;
 import com.irum.paymentservice.domain.payment.domain.entity.enums.PaymentStatus;
 import com.irum.paymentservice.domain.payment.domain.repository.PaymentRepository;

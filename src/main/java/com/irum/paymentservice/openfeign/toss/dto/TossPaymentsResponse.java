@@ -1,4 +1,4 @@
-package com.irum.paymentservice.domain.payment.client.toss.dto;
+package com.irum.paymentservice.openfeign.toss.dto;
 
 public record TossPaymentsResponse(
         String paymentKey, // 결제 조회, 결제 취소에 사용 되기 때문에 필수 저장

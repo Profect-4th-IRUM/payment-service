@@ -1,6 +1,6 @@
-package com.irum.paymentservice.domain.payment.client.order.dto.request;
+package com.irum.paymentservice.openfeign.order.dto.request;
 
-import com.irum.paymentservice.domain.payment.client.order.dto.enums.OrderStatus;
+import com.irum.paymentservice.openfeign.order.dto.enums.OrderStatus;
 import java.util.UUID;
 import lombok.Builder;
 

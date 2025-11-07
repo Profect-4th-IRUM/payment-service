@@ -1,0 +1,41 @@
+<<<<<<<< HEAD:src/main/java/com/irum/paymentservice/domain/payment/client/toss/TosspaymentsClient.java
+package com.irum.paymentservice.domain.payment.client.toss;
+
+import com.irum.paymentservice.domain.payment.client.toss.dto.TossPaymentsRequest;
+import com.irum.paymentservice.domain.payment.client.toss.dto.TossPaymentsResponse;
+import com.irum.paymentservice.domain.payment.dto.request.PaymentRequest;
+========
+package com.irum.paymentservice.domain.payment.openfeign.toss;
+
+import com.irum.paymentservice.domain.payment.dto.request.PaymentRequest;
+import com.irum.paymentservice.domain.payment.openfeign.toss.dto.TossPaymentsRequest;
+import com.irum.paymentservice.domain.payment.openfeign.toss.dto.TossPaymentsResponse;
+>>>>>>>> develop:src/main/java/com/irum/paymentservice/domain/payment/openfeign/toss/TosspaymentsClient.java
+import com.irum.paymentservice.global.infrastructure.properties.TossProperties;
+import java.nio.charset.StandardCharsets;
+import java.util.Base64;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Component;
+
+@RequiredArgsConstructor
+@Component
+@Slf4j
+public class TosspaymentsClient {
+    private final TossProperties tossProperties;
+    private final TosspaymentsAPI tosspaymentsAPI;
+
+    public TossPaymentsResponse confirmPayment(PaymentRequest request, int paymentAmount) {
+        Base64.Encoder encoder = Base64.getEncoder();
+        byte[] encodedBytes =
+                encoder.encode((tossProperties.secretKey() + ":").getBytes(StandardCharsets.UTF_8));
+        String authorizations = "Basic " + new String(encodedBytes);
+
+        // request 제작
+        TossPaymentsRequest tossPaymentsRequest =
+                new TossPaymentsRequest(
+                        request.tossPaymentKey(), request.tossOrderId(), paymentAmount);
+
+        return tosspaymentsAPI.confirmPayment(authorizations, tossPaymentsRequest);
+    }
+}

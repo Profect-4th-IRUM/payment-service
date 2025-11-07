@@ -1,12 +1,12 @@
 package com.irum.paymentservice.domain.payment.service;
 
-import com.irum.paymentservice.domain.member.domain.entity.Member;
 import com.irum.paymentservice.domain.payment.client.order.OrderClient;
 import com.irum.paymentservice.domain.payment.client.order.dto.enums.OrderStatus;
 import com.irum.paymentservice.domain.payment.client.toss.TosspaymentsClient;
 import com.irum.paymentservice.domain.payment.client.toss.dto.TossPaymentsResponse;
 import com.irum.paymentservice.domain.payment.domain.entity.Payment;
 import com.irum.paymentservice.domain.payment.domain.entity.enums.PaymentCorp;
+import com.irum.paymentservice.domain.payment.domain.entity.Payment;
 import com.irum.paymentservice.domain.payment.domain.entity.enums.PaymentStatus;
 import com.irum.paymentservice.domain.payment.domain.repository.PaymentRepository;
 import com.irum.paymentservice.domain.payment.dto.request.PaymentRequest;
@@ -27,19 +27,6 @@ public class PaymentService {
     private final TosspaymentsClient tosspaymentsClient;
     private final PaymentRepository paymentRepository;
     private final OrderClient orderClient;
-
-    public Payment preparePayment(
-            Member member, int finalPaymentAmount, int discountAmount, PaymentCorp paymentCorp) {
-        Payment payment =
-                Payment.builder()
-                        .member(member)
-                        .amount(finalPaymentAmount)
-                        .totalDiscountAmount(discountAmount)
-                        .paymentStatus(PaymentStatus.PENDING)
-                        .paymentCorp(paymentCorp)
-                        .build();
-        return paymentRepository.save(payment);
-    }
 
     public PaymentResponse createPayment(PaymentRequest request) {
         Payment payment =

@@ -6,8 +6,7 @@ import com.irum.paymentservice.domain.payment.domain.repository.PaymentRepositor
 import com.irum.paymentservice.domain.payment.internal.dto.request.PaymentInternalRequest;
 import com.irum.paymentservice.domain.payment.internal.dto.request.PaymentStatusUpdateRequest;
 import com.irum.paymentservice.domain.payment.internal.dto.response.PaymentInternalResponse;
-import com.irum.paymentservice.global.presentation.advice.exception.CommonException;
-import com.irum.paymentservice.global.presentation.advice.exception.errorcode.PaymentErrorCode;
+import com.irum.paymentservice.global.exception.errorcode.PaymentErrorCode;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

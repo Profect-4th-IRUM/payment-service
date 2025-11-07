@@ -1,4 +1,4 @@
-package com.irum.paymentservice.global.presentation.advice.exception.errorcode;
+package com.irum.paymentservice.global.exception.errorcode;
 
 import org.springframework.http.HttpStatus;
 

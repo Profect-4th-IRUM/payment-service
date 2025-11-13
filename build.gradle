@@ -108,9 +108,9 @@ dependencies {
     implementation 'org.springframework.cloud:spring-cloud-starter-openfeign'
     implementation 'io.github.openfeign:feign-gson:11.0'
 
-    // Common module
-    implementation 'com.irum:open-feign-client:0.0.3-SNAPSHOT'
-    implementation 'com.irum:global-module:0.0.2-SNAPSHOT'
+    // common module
+    implementation 'com.irum:open-feign-client:0.0.4-SNAPSHOT'
+    implementation 'com.irum:global-module:0.1.2-SNAPSHOT'
 
     // Test
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
@@ -118,8 +118,16 @@ dependencies {
     testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 
-    // Spring loadbalancer
-    implementation 'org.springframework.cloud:spring-cloud-starter-loadbalancer'
+    // Config-Server
+    implementation 'org.springframework.cloud:spring-cloud-starter-config'
+
+    // Actuator
+    implementation 'org.springframework.boot:spring-boot-starter-actuator'
+    implementation 'io.micrometer:micrometer-core'
+    implementation 'io.micrometer:micrometer-registry-prometheus'
+
+    // Service-Discovery
+    implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-client'
 }
 
 test {

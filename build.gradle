@@ -23,8 +23,27 @@ configurations {
     asciidoctorExt
 }
 
+
 repositories {
     mavenCentral()
+    maven {
+        name = "GitHubPackages"
+        url = "https://maven.pkg.github.com/Profect-4th-IRUM/open-feign-client"
+        credentials {
+
+            username = System.getenv("GIT_USERNAME") ?: project.findProperty("gpr.user")
+            password = System.getenv("GIT_TOKEN") ?: project.findProperty("gpr.key")
+        }
+    }
+    maven {
+        name = "GitHubPackages"
+        url = "https://maven.pkg.github.com/Profect-4th-IRUM/global-module"
+        credentials {
+
+            username = System.getenv("GIT_USERNAME") ?: project.findProperty("gpr.user")
+            password = System.getenv("GIT_TOKEN") ?: project.findProperty("gpr.key")
+        }
+    }
 }
 
 def querydslDir = layout.buildDirectory.dir("generated/querydsl")
@@ -89,11 +108,18 @@ dependencies {
     implementation 'org.springframework.cloud:spring-cloud-starter-openfeign'
     implementation 'io.github.openfeign:feign-gson:11.0'
 
+    // Common module
+    implementation 'com.irum:open-feign-client:0.0.3-SNAPSHOT'
+    implementation 'com.irum:global-module:0.0.2-SNAPSHOT'
+
     // Test
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.springframework.security:spring-security-test'
     testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+
+    // Spring loadbalancer
+    implementation 'org.springframework.cloud:spring-cloud-starter-loadbalancer'
 }
 
 test {

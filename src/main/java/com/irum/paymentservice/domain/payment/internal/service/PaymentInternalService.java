@@ -1,13 +1,14 @@
 package com.irum.paymentservice.domain.payment.internal.service;
 
+import com.irum.global.advice.exception.CommonException;
 import com.irum.paymentservice.domain.payment.domain.entity.Payment;
 import com.irum.paymentservice.domain.payment.domain.entity.enums.PaymentStatus;
 import com.irum.paymentservice.domain.payment.domain.repository.PaymentRepository;
 import com.irum.paymentservice.domain.payment.internal.dto.request.PaymentInternalRequest;
 import com.irum.paymentservice.domain.payment.internal.dto.request.PaymentStatusUpdateRequest;
 import com.irum.paymentservice.domain.payment.internal.dto.response.PaymentInternalResponse;
-import com.irum.paymentservice.global.presentation.advice.exception.CommonException;
-import com.irum.paymentservice.global.presentation.advice.exception.errorcode.PaymentErrorCode;
+import com.irum.paymentservice.global.exception.errorcode.PaymentErrorCode;
+import com.irum.paymentservice.global.util.MemberUtil;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -20,9 +21,10 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public class PaymentInternalService {
     private final PaymentRepository paymentRepository;
+    private final MemberUtil memberUtil;
 
     public UUID preparePayment(PaymentInternalRequest request) {
-        Long memberId = 1L;
+        Long memberId = memberUtil.getCurrentMemberId();
 
         Payment payment =
                 Payment.builder()

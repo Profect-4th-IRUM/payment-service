@@ -1,22 +1,35 @@
 package com.irum.paymentservice.openfeign.order;
 
-import com.irum.paymentservice.openfeign.config.FeignConfig;
+import com.irum.paymentservice.openfeign.order.client.OrderClient;
+import com.irum.paymentservice.openfeign.order.enums.OrderStatus;
 import com.irum.paymentservice.openfeign.order.dto.request.UpdateOrderStatusFailedRequest;
 import com.irum.paymentservice.openfeign.order.dto.request.UpdateOrderStatusPreparingRequest;
-import org.springframework.cloud.openfeign.FeignClient;
-import org.springframework.web.bind.annotation.PatchMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import java.util.UUID;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Component;
 
-@FeignClient(
-        name = "ORDER-SERVICE",
-        url = "order-service/internal/orders/",
-        configuration = FeignConfig.class)
-public interface OrderAPI {
+@Component
+@RequiredArgsConstructor
+public class OrderAPI {
+    private final OrderClient orderAPI;
 
-    @PatchMapping("preparing")
-    String updateOrderStatusPreparing(@RequestBody UpdateOrderStatusPreparingRequest request);
+    public String updateOrderStatusPreparing(OrderStatus orderStatus, UUID orderId) {
+        UpdateOrderStatusPreparingRequest request =
+                UpdateOrderStatusPreparingRequest.builder()
+                        .orderId(orderId)
+                        .orderStatus(orderStatus)
+                        .build();
+        return orderAPI.updateOrderStatusPreparing(request);
+    }
 
-    @PatchMapping("failed")
-    void updateOrderStatusFailed(
-            @RequestBody UpdateOrderStatusFailedRequest updateOrderStatusFailed);
+    public void updateOrderStatusFailed(OrderStatus orderStatus, UUID orderId, UUID paymentId) {
+        UpdateOrderStatusFailedRequest request =
+                UpdateOrderStatusFailedRequest.builder()
+                        .orderId(orderId)
+                        .orderStatus(orderStatus)
+                        .paymentId(paymentId)
+                        .build();
+
+        orderAPI.updateOrderStatusFailed(request);
+    }
 }

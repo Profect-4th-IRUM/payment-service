@@ -8,9 +8,9 @@ import com.irum.paymentservice.domain.payment.dto.request.PaymentRequest;
 import com.irum.paymentservice.domain.payment.dto.response.PaymentResponse;
 import com.irum.paymentservice.global.exception.errorcode.PaymentErrorCode;
 import com.irum.paymentservice.global.util.MemberUtil;
-import com.irum.paymentservice.openfeign.order.client.OrderClient;
-import com.irum.paymentservice.openfeign.order.dto.enums.OrderStatus;
-import com.irum.paymentservice.openfeign.toss.client.TosspaymentsClient;
+import com.irum.paymentservice.openfeign.order.OrderAPI;
+import com.irum.paymentservice.openfeign.order.enums.OrderStatus;
+import com.irum.paymentservice.openfeign.toss.TosspaymentsAPI;
 import com.irum.paymentservice.openfeign.toss.dto.TossPaymentsResponse;
 import feign.FeignException;
 import lombok.RequiredArgsConstructor;
@@ -23,10 +23,10 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 @Transactional
 public class PaymentService {
-    private final TosspaymentsClient tosspaymentsClient;
+    private final TosspaymentsAPI tosspaymentsClient;
     private final PaymentRepository paymentRepository;
     private final MemberUtil memberUtil;
-    private final OrderClient orderClient;
+    private final OrderAPI orderClient;
 
     public PaymentResponse createPayment(PaymentRequest request) {
         Payment payment =

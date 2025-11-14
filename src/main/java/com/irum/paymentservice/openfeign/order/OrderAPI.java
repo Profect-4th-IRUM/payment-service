@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 @Component
 @RequiredArgsConstructor
 public class OrderAPI {
-    private final OrderClient orderAPI;
+    private final OrderClient orderClient;
 
     public String updateOrderStatusPreparing(OrderStatus orderStatus, UUID orderId) {
         UpdateOrderStatusPreparingRequest request =
@@ -19,7 +19,7 @@ public class OrderAPI {
                         .orderId(orderId)
                         .orderStatus(orderStatus)
                         .build();
-        return orderAPI.updateOrderStatusPreparing(request);
+        return orderClient.updateOrderStatusPreparing(request);
     }
 
     public void updateOrderStatusFailed(OrderStatus orderStatus, UUID orderId, UUID paymentId) {
@@ -30,6 +30,6 @@ public class OrderAPI {
                         .paymentId(paymentId)
                         .build();
 
-        orderAPI.updateOrderStatusFailed(request);
+        orderClient.updateOrderStatusFailed(request);
     }
 }

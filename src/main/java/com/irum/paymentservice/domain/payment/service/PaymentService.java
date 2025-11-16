@@ -32,7 +32,7 @@ public class PaymentService {
         Payment payment =
                 paymentRepository
                         .findById(request.paymentId())
-                        .orElseThrow(() -> new CommonException(PaymentErrorCode.PAYMENT_ERROR));
+                        .orElseThrow(() -> new CommonException(PaymentErrorCode.PAYMENT_NOT_FOUND));
 
         // 접근성 확인
         memberUtil.assertMemberResourceAccess(payment.getMemberId());

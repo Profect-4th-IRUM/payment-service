@@ -2,11 +2,11 @@ spring:
   application:
     name: payment-service
   profiles:
-    active: local
-    include:
-      - redis
-      - toss
-logback:
-  log-path: ./logs
+    group:
+      "local": "local, toss, default-datasource, default-redis, eureka, openfeign, actuator"
+      "docker": "docker, toss, default-datasource, default-redis, eureka, openfeign, actuator"
+      "prod": "prod, toss, prod-datasource, prod-cache-redis, eureka, openfeign, actuator"
+    active: "local"
 
-
+  config:
+    import: optional:configserver:${CONFIG_SERVER_URL:http://localhost:8888}

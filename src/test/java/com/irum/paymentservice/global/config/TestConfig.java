@@ -1,5 +1,6 @@
 // package com.irum.paymentservice.global.config;
 //
+// import com.irum.global.infrastructure.config.GlobalAutoConfiguration;
 // import com.irum.paymentservice.domain.auth.application.service.AuthService;
 // import com.irum.paymentservice.domain.auth.application.service.JwtTokenService;
 // import com.irum.paymentservice.domain.cart.application.service.CartService;
@@ -18,8 +19,10 @@
 // import org.mockito.Mockito;
 // import org.springframework.boot.test.context.TestConfiguration;
 // import org.springframework.context.annotation.Bean;
+// import org.springframework.context.annotation.Import;
 //
 // @TestConfiguration
+// @Import(GlobalAutoConfiguration.class)
 // public class TestConfig {
 //    @Bean
 //    public MemberService memberService() {

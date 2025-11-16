@@ -2,12 +2,13 @@ package com.irum.paymentservice;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.scheduling.annotation.EnableScheduling;
 
 @SpringBootApplication
-@EnableFeignClients(basePackages = {"com.irum.paymentservice.openfeign", "openfeign"})
-@EnableScheduling
+@EnableFeignClients(basePackages = {"com.irum.paymentservice.openfeign"})
+@EnableDiscoveryClient
 public class PaymentServiceApplication {
 
     public static void main(String[] args) {

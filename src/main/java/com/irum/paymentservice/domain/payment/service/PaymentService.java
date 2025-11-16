@@ -48,7 +48,7 @@ public class PaymentService {
                     tosspaymentsClient.confirmPayment(request, payment.getAmount());
 
             // 상태 업데이트
-            payment.updateToPaid(PaymentStatus.PAID, tossPaymentsResponse);
+            payment.updateToPaid(tossPaymentsResponse);
 
             // order, orderdetail 상태 업데이트
             String OrderNum =

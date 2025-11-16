@@ -1,4 +1,4 @@
-package com.irum.paymentservice.openfeign.order.dto.enums;
+package com.irum.paymentservice.openfeign.order.enums;
 
 public enum OrderStatus {
     FAILED,

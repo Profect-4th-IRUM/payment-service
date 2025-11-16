@@ -8,9 +8,9 @@ import com.irum.paymentservice.domain.payment.dto.request.PaymentRequest;
 import com.irum.paymentservice.domain.payment.dto.response.PaymentResponse;
 import com.irum.paymentservice.global.exception.errorcode.PaymentErrorCode;
 import com.irum.paymentservice.global.util.MemberUtil;
-import com.irum.paymentservice.openfeign.order.client.OrderClient;
-import com.irum.paymentservice.openfeign.order.dto.enums.OrderStatus;
-import com.irum.paymentservice.openfeign.toss.client.TosspaymentsClient;
+import com.irum.paymentservice.openfeign.order.OrderAPI;
+import com.irum.paymentservice.openfeign.order.enums.OrderStatus;
+import com.irum.paymentservice.openfeign.toss.TosspaymentsAPI;
 import com.irum.paymentservice.openfeign.toss.dto.TossPaymentsResponse;
 import feign.FeignException;
 import lombok.RequiredArgsConstructor;
@@ -23,10 +23,10 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 @Transactional
 public class PaymentService {
-    private final TosspaymentsClient tosspaymentsClient;
+    private final TosspaymentsAPI tosspaymentsClient;
     private final PaymentRepository paymentRepository;
     private final MemberUtil memberUtil;
-    private final OrderClient orderClient;
+    private final OrderAPI orderAPI;
 
     public PaymentResponse createPayment(PaymentRequest request) {
         Payment payment =
@@ -52,7 +52,7 @@ public class PaymentService {
 
             // order, orderdetail 상태 업데이트
             String OrderNum =
-                    orderClient.updateOrderStatusPreparing(
+                    orderAPI.updateOrderStatusPreparing(
                             OrderStatus.PREPARING, request.orderId());
 
             return new PaymentResponse(OrderNum, payment.getAmount());
@@ -63,7 +63,7 @@ public class PaymentService {
             payment.updateStatus(PaymentStatus.FAILED);
 
             // order, orderdetail 상태 업데이트, 재고 롤백, 쿠폰 롤백
-            orderClient.updateOrderStatusFailed(
+            orderAPI.updateOrderStatusFailed(
                     OrderStatus.FAILED, request.orderId(), request.paymentId());
 
             throw new CommonException(PaymentErrorCode.PAYMENT_ERROR);

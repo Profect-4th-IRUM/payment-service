@@ -1,35 +1,21 @@
 package com.irum.paymentservice.openfeign.order.client;
 
-import com.irum.paymentservice.openfeign.order.OrderAPI;
-import com.irum.paymentservice.openfeign.order.dto.enums.OrderStatus;
 import com.irum.paymentservice.openfeign.order.dto.request.UpdateOrderStatusFailedRequest;
 import com.irum.paymentservice.openfeign.order.dto.request.UpdateOrderStatusPreparingRequest;
-import java.util.UUID;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Component;
+import org.springframework.cloud.openfeign.FeignClient;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 
-@Component
-@RequiredArgsConstructor
-public class OrderClient {
-    private final OrderAPI orderAPI;
+@FeignClient(
+        name = "ORDER-SERVICE",
+        url = "/internal/orders/"
+)
+public interface OrderClient {
 
-    public String updateOrderStatusPreparing(OrderStatus orderStatus, UUID orderId) {
-        UpdateOrderStatusPreparingRequest request =
-                UpdateOrderStatusPreparingRequest.builder()
-                        .orderId(orderId)
-                        .orderStatus(orderStatus)
-                        .build();
-        return orderAPI.updateOrderStatusPreparing(request);
-    }
+    @PatchMapping("preparing")
+    String updateOrderStatusPreparing(@RequestBody UpdateOrderStatusPreparingRequest request);
 
-    public void updateOrderStatusFailed(OrderStatus orderStatus, UUID orderId, UUID paymentId) {
-        UpdateOrderStatusFailedRequest request =
-                UpdateOrderStatusFailedRequest.builder()
-                        .orderId(orderId)
-                        .orderStatus(orderStatus)
-                        .paymentId(paymentId)
-                        .build();
-
-        orderAPI.updateOrderStatusFailed(request);
-    }
+    @PatchMapping("failed")
+    void updateOrderStatusFailed(
+            @RequestBody UpdateOrderStatusFailedRequest updateOrderStatusFailed);
 }

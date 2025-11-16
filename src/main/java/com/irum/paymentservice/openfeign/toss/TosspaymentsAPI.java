@@ -1,16 +1,34 @@
 package com.irum.paymentservice.openfeign.toss;
 
-import com.irum.paymentservice.openfeign.config.FeignConfig;
+import com.irum.paymentservice.domain.payment.dto.request.PaymentRequest;
+import com.irum.paymentservice.global.infrastructure.properties.TossProperties;
+import com.irum.paymentservice.openfeign.toss.client.TosspaymentsClient;
 import com.irum.paymentservice.openfeign.toss.dto.TossPaymentsRequest;
 import com.irum.paymentservice.openfeign.toss.dto.TossPaymentsResponse;
-import org.springframework.cloud.openfeign.FeignClient;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
+import java.nio.charset.StandardCharsets;
+import java.util.Base64;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Component;
 
-@FeignClient(name = "TOSS", url = "https://api.tosspayments.com", configuration = FeignConfig.class)
-public interface TosspaymentsAPI {
-    @PostMapping("/v1/payments/confirm")
-    TossPaymentsResponse confirmPayment(
-            @RequestHeader("Authorization") String auth, @RequestBody TossPaymentsRequest request);
+@RequiredArgsConstructor
+@Component
+@Slf4j
+public class TosspaymentsAPI {
+    private final TossProperties tossProperties;
+    private final TosspaymentsClient tosspaymentsAPI;
+
+    public TossPaymentsResponse confirmPayment(PaymentRequest request, int paymentAmount) {
+        Base64.Encoder encoder = Base64.getEncoder();
+        byte[] encodedBytes =
+                encoder.encode((tossProperties.secretKey() + ":").getBytes(StandardCharsets.UTF_8));
+        String authorizations = "Basic " + new String(encodedBytes);
+
+        // request 제작
+        TossPaymentsRequest tossPaymentsRequest =
+                new TossPaymentsRequest(
+                        request.tossPaymentKey(), request.tossOrderId(), paymentAmount);
+
+        return tosspaymentsAPI.confirmPayment(authorizations, tossPaymentsRequest);
+    }
 }

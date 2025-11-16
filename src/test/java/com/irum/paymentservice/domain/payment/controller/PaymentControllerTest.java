@@ -1,4 +1,4 @@
-package com.irum.paymentservice.domain.payment;
+package com.irum.paymentservice.domain.payment.controller;
 
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
@@ -9,12 +9,14 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.irum.global.advice.exception.GlobalExceptionHandler;
+import com.irum.global.advice.response.CommonResponseAdvice;
 import com.irum.paymentservice.domain.payment.controller.PaymentController;
 import com.irum.paymentservice.domain.payment.dto.request.PaymentRequest;
 import com.irum.paymentservice.domain.payment.dto.response.PaymentResponse;
 import com.irum.paymentservice.domain.payment.service.PaymentService;
-import com.irum.paymentservice.global.config.SecurityTestConfig;
 import com.irum.paymentservice.global.config.TestConfig;
+
 import java.util.UUID;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -30,26 +32,27 @@ import org.springframework.test.web.servlet.MockMvc;
 
 @WebMvcTest(controllers = PaymentController.class)
 @AutoConfigureRestDocs
-@Import({SecurityTestConfig.class, TestConfig.class})
+@Import({CommonResponseAdvice.class, GlobalExceptionHandler.class, TestConfig.class})
 public class PaymentControllerTest {
 
     @Autowired private MockMvc mockMvc;
-    @MockitoBean private PaymentService paymentService;
+    @Autowired private PaymentService paymentService;
     @Autowired private ObjectMapper objectMapper;
 
     @Test
     @DisplayName("결제 등록 API")
     void paymentCreateApiTest() throws Exception {
         UUID orderId = UUID.randomUUID();
+        UUID paymentId = UUID.randomUUID();
         String orderNum = "ORD-777777";
         int totalAmount = 10000;
-        PaymentRequest request = new PaymentRequest("tossOrderId", "tosspaymentkey", orderId);
+        PaymentRequest request = new PaymentRequest("tossOrderId", orderId, "tosspaymentkey", paymentId);
         PaymentResponse response = new PaymentResponse(orderNum, totalAmount);
 
         Mockito.when(paymentService.createPayment(request)).thenReturn(response);
 
         mockMvc.perform(
-                        post("/payment")
+                        post("/payments")
                                 .with(csrf())
                                 .with(user("100").roles("CUSTOMER"))
                                 .contentType(MediaType.APPLICATION_JSON)
@@ -67,7 +70,9 @@ public class PaymentControllerTest {
                                                 .description("토스에서 발급해주는 orderId"),
                                         fieldWithPath("tossPaymentKey")
                                                 .description("토스에서 발급해주는 paymentKey"),
-                                        fieldWithPath("orderId").description("결제하려는 주문 id")),
+                                        fieldWithPath("orderId").description("결제하려는 주문 id"),
+                                        fieldWithPath("paymentId").description("결제 id")
+                                ),
                                 responseFields(
                                         fieldWithPath("success").description("성공 여부"),
                                         fieldWithPath("status").description("HTTP 상태 코드"),

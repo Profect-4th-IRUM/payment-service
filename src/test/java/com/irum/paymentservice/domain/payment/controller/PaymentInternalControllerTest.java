@@ -7,6 +7,7 @@ import static org.springframework.restdocs.payload.PayloadDocumentation.*;
 import static org.springframework.restdocs.request.RequestDocumentation.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
+import java.util.List;
 import java.util.UUID;
 
 import org.junit.jupiter.api.DisplayName;
@@ -22,9 +23,12 @@ import org.springframework.test.web.servlet.MockMvc;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.irum.global.advice.exception.GlobalExceptionHandler;
 import com.irum.global.advice.response.CommonResponseAdvice;
+import com.irum.paymentservice.domain.payment.domain.entity.enums.PaymentCorp;
 import com.irum.paymentservice.domain.payment.domain.entity.enums.PaymentMethod;
 import com.irum.paymentservice.domain.payment.domain.entity.enums.PaymentStatus;
 import com.irum.paymentservice.domain.payment.internal.controller.PaymentInternalController;
+import com.irum.paymentservice.domain.payment.internal.dto.request.PaymentInternalRequest;
+import com.irum.paymentservice.domain.payment.internal.dto.request.PaymentStatusUpdateRequest;
 import com.irum.paymentservice.domain.payment.internal.dto.response.PaymentInternalResponse;
 import com.irum.paymentservice.domain.payment.internal.service.PaymentInternalService;
 import com.irum.paymentservice.global.config.TestConfig;
@@ -71,4 +75,32 @@ public class PaymentInternalControllerTest {
 						fieldWithPath("totalDiscountAmount").description("할인 금액"))));
 
 	}
+
+	@Test
+	@DisplayName("결제 상태 Failed 업데이트")
+	void updatePaymentFailedAPITest() throws Exception {
+		//given
+		UUID id1 = UUID.randomUUID();
+		UUID id2 = UUID.randomUUID();
+		PaymentStatusUpdateRequest request = new PaymentStatusUpdateRequest(List.of(id1, id2));
+		when(paymentInternalService.updatePaymentFailed(request)).thenReturn(2);
+
+		//when then
+		mockMvc.perform(
+			patch("/internal/payments/failed")
+				.contentType(MediaType.APPLICATION_JSON)
+				.content(objectMapper.writeValueAsString(request)))
+			.andExpect(jsonPath("$").value(2))
+			.andDo(
+				document(
+					"payment-update-failed",
+					requestFields(
+						fieldWithPath("paymentIdList").description("상태 업데이트 할 결제 ID")
+					),
+					responseBody()
+				)
+			);
+	}
+
+
 }

@@ -102,5 +102,30 @@ public class PaymentInternalControllerTest {
 			);
 	}
 
+	@Test
+	@DisplayName("결제 준비 (pending상태)")
+	void preparePaymentAPITest() throws Exception {
+		//given
+		UUID paymentId = UUID.randomUUID();
+		PaymentInternalRequest request = new PaymentInternalRequest(10000, 2000, PaymentCorp.TOSS);
+		when(paymentInternalService.preparePayment(any(PaymentInternalRequest.class))).thenReturn(paymentId);
 
+		//when then
+		mockMvc.perform(
+			post("/internal/payments")
+				.contentType(MediaType.APPLICATION_JSON)
+				.content(objectMapper.writeValueAsString(request))
+		).andExpect(jsonPath("$").value(paymentId.toString()))
+			.andDo(
+				document(
+					"payment-prepare",
+					requestFields(
+						fieldWithPath("finalPaymentAmount").description("실 결제금액"),
+						fieldWithPath("discountAmount").description("할인금액"),
+						fieldWithPath("paymentCorp").description("결제 회사")
+					),
+					responseBody()
+				)
+			);
+	}
 }

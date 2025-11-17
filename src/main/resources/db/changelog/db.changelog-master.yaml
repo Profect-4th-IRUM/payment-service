@@ -1,0 +1,7 @@
+databaseChangeLog:
+  - include:
+      file: changes/001-create-payment-table.yaml
+      relativeToChangelogFile: true
+  - include:
+      file: changes/002-insert-default-payments.yaml
+      relativeToChangelogFile: true

@@ -123,6 +123,10 @@ dependencies {
 
     // Service-Discovery
     implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-client'
+
+    //liquibase
+    implementation 'org.liquibase:liquibase-core'
+
 }
 
 test {

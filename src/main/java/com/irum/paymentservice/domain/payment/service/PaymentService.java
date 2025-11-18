@@ -1,6 +1,7 @@
 package com.irum.paymentservice.domain.payment.service;
 
 import com.irum.global.advice.exception.CommonException;
+import com.irum.openfeign.order.enums.OrderStatus;
 import com.irum.paymentservice.domain.payment.domain.entity.Payment;
 import com.irum.paymentservice.domain.payment.domain.entity.enums.PaymentStatus;
 import com.irum.paymentservice.domain.payment.domain.repository.PaymentRepository;
@@ -9,7 +10,6 @@ import com.irum.paymentservice.domain.payment.dto.response.PaymentResponse;
 import com.irum.paymentservice.global.exception.errorcode.PaymentErrorCode;
 import com.irum.paymentservice.global.util.MemberUtil;
 import com.irum.paymentservice.openfeign.order.OrderAPI;
-import com.irum.paymentservice.openfeign.order.enums.OrderStatus;
 import com.irum.paymentservice.openfeign.toss.TosspaymentsAPI;
 import com.irum.paymentservice.openfeign.toss.dto.TossPaymentsResponse;
 import feign.FeignException;

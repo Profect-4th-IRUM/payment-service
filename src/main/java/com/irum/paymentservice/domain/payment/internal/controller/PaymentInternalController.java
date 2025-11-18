@@ -22,7 +22,7 @@ public class PaymentInternalController {
         return paymentInternalService.getPayment(paymentId);
     }
 
-    @PatchMapping("/failed")
+    @PutMapping("/failed")
     public int updatePaymentFailed(@RequestBody UpdatePaymentStatusRequest request) {
         return paymentInternalService.updatePaymentFailed(request);
     }

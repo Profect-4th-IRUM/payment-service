@@ -41,8 +41,10 @@ public class PaymentService {
         if (!payment.getPaymentStatus().equals(PaymentStatus.PENDING)) {
             throw new CommonException(PaymentErrorCode.PAYMENT_BAD_REQUEST);
         }
+        log.info("Creating payment with payment id {}", payment.getPaymentId());
 
         try {
+
             // 토스 페이먼츠 승인 API호출
             TossPaymentsResponse tossPaymentsResponse =
                     tosspaymentsClient.confirmPayment(request, payment.getAmount());
@@ -51,9 +53,13 @@ public class PaymentService {
             payment.updateToPaid(PaymentStatus.PAID, tossPaymentsResponse);
 
             // order, orderdetail 상태 업데이트
-            String OrderNum =
-                    orderAPI.updateOrderStatusPreparing(
-                            OrderStatus.PREPARING, request.orderId());
+            String OrderNum = "";
+            try {
+                OrderNum = orderAPI.updateOrderStatusPreparing(
+                                OrderStatus.PREPARING, request.orderId());
+            } catch (Exception e) {
+                log.error("Failed to update order status preparing {} message {}", e, e.getMessage());
+            }
 
             return new PaymentResponse(OrderNum, payment.getAmount());
         } catch (FeignException e) {

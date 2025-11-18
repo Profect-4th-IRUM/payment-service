@@ -52,8 +52,7 @@ public class PaymentService {
 
             // order, orderdetail 상태 업데이트
             String OrderNum =
-                    orderAPI.updateOrderStatusPreparing(
-                            OrderStatus.PREPARING, request.orderId());
+                    orderAPI.updateOrderStatusPreparing(OrderStatus.PREPARING, request.orderId());
 
             return new PaymentResponse(OrderNum, payment.getAmount());
         } catch (FeignException e) {

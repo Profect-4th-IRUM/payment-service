@@ -11,12 +11,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.irum.global.advice.exception.GlobalExceptionHandler;
 import com.irum.global.advice.response.CommonResponseAdvice;
-import com.irum.paymentservice.domain.payment.controller.PaymentController;
 import com.irum.paymentservice.domain.payment.dto.request.PaymentRequest;
 import com.irum.paymentservice.domain.payment.dto.response.PaymentResponse;
 import com.irum.paymentservice.domain.payment.service.PaymentService;
 import com.irum.paymentservice.global.config.TestConfig;
-
 import java.util.UUID;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -27,7 +25,6 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.context.annotation.Import;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
 @WebMvcTest(controllers = PaymentController.class)
@@ -46,7 +43,8 @@ public class PaymentControllerTest {
         UUID paymentId = UUID.randomUUID();
         String orderNum = "ORD-777777";
         int totalAmount = 10000;
-        PaymentRequest request = new PaymentRequest("tossOrderId", orderId, "tosspaymentkey", paymentId);
+        PaymentRequest request =
+                new PaymentRequest("tossOrderId", orderId, "tosspaymentkey", paymentId);
         PaymentResponse response = new PaymentResponse(orderNum, totalAmount);
 
         Mockito.when(paymentService.createPayment(request)).thenReturn(response);
@@ -71,8 +69,7 @@ public class PaymentControllerTest {
                                         fieldWithPath("tossPaymentKey")
                                                 .description("토스에서 발급해주는 paymentKey"),
                                         fieldWithPath("orderId").description("결제하려는 주문 id"),
-                                        fieldWithPath("paymentId").description("결제 id")
-                                ),
+                                        fieldWithPath("paymentId").description("결제 id")),
                                 responseFields(
                                         fieldWithPath("success").description("성공 여부"),
                                         fieldWithPath("status").description("HTTP 상태 코드"),

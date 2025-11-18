@@ -2,7 +2,6 @@ package com.irum.paymentservice.domain.payment.service;
 
 import com.irum.global.advice.exception.CommonException;
 import com.irum.openfeign.order.enums.OrderStatus;
-import com.irum.openfeign.payment.client.PaymentClient;
 import com.irum.paymentservice.domain.payment.domain.entity.Payment;
 import com.irum.paymentservice.domain.payment.domain.entity.enums.PaymentStatus;
 import com.irum.paymentservice.domain.payment.domain.repository.PaymentRepository;
@@ -57,7 +56,8 @@ public class PaymentService {
             // order, orderdetail 상태 업데이트
             String OrderNum = "";
             try {
-                OrderNum = orderAPI.updateOrderStatusPreparing(
+                OrderNum =
+                        orderAPI.updateOrderStatusPreparing(
                                 OrderStatus.PREPARING, request.orderId());
             } catch (Exception e) {
                 log.error("[Feign] 주문 서비스 통신 에러 {} message {}", e, e.getMessage());
@@ -76,8 +76,7 @@ public class PaymentService {
                 orderAPI.updateOrderStatusFailed(
                         OrderStatus.FAILED, request.orderId(), request.paymentId());
             } catch (Exception orderException) {
-                log.error(
-                        "[에러] exception {} {}",orderException, orderException.getMessage());
+                log.error("[에러] exception {} {}", orderException, orderException.getMessage());
             }
             log.info("[Feign] orderAPI.updateOrderStatusFailed 완료");
 

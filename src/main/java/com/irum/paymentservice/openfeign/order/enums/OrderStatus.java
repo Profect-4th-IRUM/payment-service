@@ -1,6 +1,6 @@
-//package com.irum.paymentservice.openfeign.order.enums;
+// package com.irum.paymentservice.openfeign.order.enums;
 //
-//public enum OrderStatus {
+// public enum OrderStatus {
 //    FAILED,
 //    PENDING,
 //    PREPARING,
@@ -8,4 +8,4 @@
 //    SHIPPED,
 //    PARTIALLY_DELIVERED,
 //    DELIVERED
-//}
+// }

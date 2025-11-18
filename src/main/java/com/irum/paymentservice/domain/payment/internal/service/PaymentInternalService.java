@@ -1,9 +1,14 @@
 package com.irum.paymentservice.domain.payment.internal.service;
 
 import com.irum.global.advice.exception.CommonException;
+import com.irum.openfeign.payment.dto.request.CreatePaymentRequest;
+import com.irum.openfeign.payment.dto.request.UpdatePaymentStatusRequest;
+import com.irum.openfeign.payment.dto.response.PaymentResponse;
 import com.irum.paymentservice.domain.payment.domain.entity.Payment;
+import com.irum.paymentservice.domain.payment.domain.entity.enums.PaymentCorp;
 import com.irum.paymentservice.domain.payment.domain.entity.enums.PaymentStatus;
 import com.irum.paymentservice.domain.payment.domain.repository.PaymentRepository;
+import com.irum.paymentservice.domain.payment.internal.PaymentResponseMapper;
 import com.irum.paymentservice.domain.payment.internal.dto.request.PaymentInternalRequest;
 import com.irum.paymentservice.domain.payment.internal.dto.request.PaymentStatusUpdateRequest;
 import com.irum.paymentservice.domain.payment.internal.dto.response.PaymentInternalResponse;
@@ -23,7 +28,7 @@ public class PaymentInternalService {
     private final PaymentRepository paymentRepository;
     private final MemberUtil memberUtil;
 
-    public UUID preparePayment(PaymentInternalRequest request) {
+    public UUID preparePayment(CreatePaymentRequest request) {
         Long memberId = memberUtil.getCurrentMemberId();
 
         Payment payment =
@@ -32,21 +37,21 @@ public class PaymentInternalService {
                         .amount(request.finalPaymentAmount())
                         .totalDiscountAmount(request.discountAmount())
                         .paymentStatus(PaymentStatus.PENDING)
-                        .paymentCorp(request.paymentCorp())
+                        .paymentCorp(PaymentCorp.valueOf(request.paymentCorp().toString()))
                         .build();
         Payment savedPayment = paymentRepository.save(payment);
         return savedPayment.getPaymentId();
     }
 
-    public PaymentInternalResponse getPayment(UUID paymentId) {
+    public PaymentResponse getPayment(UUID paymentId) {
         Payment payment =
                 paymentRepository
                         .findById(paymentId)
                         .orElseThrow(() -> new CommonException(PaymentErrorCode.PAYMENT_NOT_FOUND));
-        return PaymentInternalResponse.from(payment);
+        return PaymentResponseMapper.toPaymentResponse(payment);
     }
 
-    public int updatePaymentFailed(PaymentStatusUpdateRequest request) {
-        return paymentRepository.updateStatusToFailedByIds(request.paymetIdList());
+    public int updatePaymentFailed(UpdatePaymentStatusRequest request) {
+        return paymentRepository.updateStatusToFailedByIds(request.paymentIdList());
     }
 }

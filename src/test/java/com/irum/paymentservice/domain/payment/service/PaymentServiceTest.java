@@ -17,12 +17,10 @@ import com.irum.paymentservice.openfeign.order.enums.OrderStatus;
 import com.irum.paymentservice.openfeign.toss.TosspaymentsAPI;
 import com.irum.paymentservice.openfeign.toss.dto.TossPaymentsResponse;
 import feign.FeignException;
-
+import feign.Request;
 import java.util.Collections;
 import java.util.Optional;
 import java.util.UUID;
-
-import feign.Request;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -152,15 +150,16 @@ public class PaymentServiceTest {
         when(payment.getAmount()).thenReturn(TEST_AMOUNT);
 
         // toss 호출 에러
-        Request dummyRequest = Request.create(
-                Request.HttpMethod.POST,
-                "http://mock-toss-api/confirm",
-                Collections.emptyMap(),
-                (byte[]) null,
-                null
-        );
+        Request dummyRequest =
+                Request.create(
+                        Request.HttpMethod.POST,
+                        "http://mock-toss-api/confirm",
+                        Collections.emptyMap(),
+                        (byte[]) null,
+                        null);
         when(tosspaymentsAPI.confirmPayment(paymentRequest, TEST_AMOUNT))
-                .thenThrow(new FeignException.InternalServerError("결제실패", dummyRequest, null, null));
+                .thenThrow(
+                        new FeignException.InternalServerError("결제실패", dummyRequest, null, null));
 
         // when then
         assertThatThrownBy(() -> paymentService.createPayment(paymentRequest))

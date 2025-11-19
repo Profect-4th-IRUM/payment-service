@@ -32,7 +32,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 @WebMvcTest(controllers = {PaymentInternalController.class})
 @AutoConfigureRestDocs
-@Import({CommonResponseAdvice.class, GlobalExceptionHandler.class, TestConfig.class})
+@Import({TestConfig.class})
 public class PaymentInternalControllerTest {
     @Autowired private MockMvc mockMvc;
     @Autowired private PaymentInternalService paymentInternalService;

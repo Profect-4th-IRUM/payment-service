@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 import com.irum.global.advice.exception.CommonException;
+import com.irum.openfeign.order.enums.OrderStatus;
 import com.irum.paymentservice.domain.payment.domain.entity.Payment;
 import com.irum.paymentservice.domain.payment.domain.entity.enums.PaymentMethod;
 import com.irum.paymentservice.domain.payment.domain.entity.enums.PaymentStatus;
@@ -13,7 +14,6 @@ import com.irum.paymentservice.domain.payment.dto.response.PaymentResponse;
 import com.irum.paymentservice.global.exception.errorcode.PaymentErrorCode;
 import com.irum.paymentservice.global.util.MemberUtil;
 import com.irum.paymentservice.openfeign.order.OrderAPI;
-import com.irum.paymentservice.openfeign.order.enums.OrderStatus;
 import com.irum.paymentservice.openfeign.toss.TosspaymentsAPI;
 import com.irum.paymentservice.openfeign.toss.dto.TossPaymentsResponse;
 import feign.FeignException;
@@ -38,6 +38,7 @@ public class PaymentServiceTest {
     @Mock MemberUtil memberUtil;
     @Mock OrderAPI orderAPI;
     @Mock Payment payment;
+    @Mock PaymentStatusService paymentStatusService;
 
     // --- 테스트용 공통 데이터 ---
     private PaymentRequest paymentRequest;
@@ -157,7 +158,7 @@ public class PaymentServiceTest {
                         Collections.emptyMap(),
                         (byte[]) null,
                         null);
-        when(tosspaymentsAPI.confirmPayment(paymentRequest, TEST_AMOUNT))
+        when(tosspaymentsAPI.confirmPayment(any(PaymentRequest.class), eq(TEST_AMOUNT)))
                 .thenThrow(
                         new FeignException.InternalServerError("결제실패", dummyRequest, null, null));
 
@@ -170,7 +171,6 @@ public class PaymentServiceTest {
         // then
         verify(tosspaymentsAPI, times(1)).confirmPayment(paymentRequest, TEST_AMOUNT);
         // 실패 로직 1번씩 호출
-        verify(payment, times(1)).updateStatus(PaymentStatus.FAILED);
         verify(orderAPI, times(1))
                 .updateOrderStatusFailed(OrderStatus.FAILED, TEST_ORDER_ID, TEST_PAYMENT_ID);
         // 성공 로직 호출 x

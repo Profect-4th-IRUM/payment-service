@@ -104,7 +104,7 @@ dependencies {
     implementation 'io.github.openfeign:feign-gson:11.0'
 
     // common module
-    implementation 'com.irum:open-feign-client:0.0.4-SNAPSHOT'
+    implementation 'com.irum:open-feign-client:1.0.0-SNAPSHOT'
     implementation 'com.irum:global-module:0.1.8-SNAPSHOT'
 
     // Test

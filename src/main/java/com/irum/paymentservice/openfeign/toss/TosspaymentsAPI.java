@@ -28,7 +28,7 @@ public class TosspaymentsAPI {
         TossPaymentsRequest tossPaymentsRequest =
                 new TossPaymentsRequest(
                         request.tossPaymentKey(), request.tossOrderId(), paymentAmount);
-
+        log.info("Toss Payment Request: {}", tossPaymentsRequest.toString());
         return tosspaymentsAPI.confirmPayment(authorizations, tossPaymentsRequest);
     }
 }

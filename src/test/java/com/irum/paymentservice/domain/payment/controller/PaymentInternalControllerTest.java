@@ -8,15 +8,13 @@ import static org.springframework.restdocs.request.RequestDocumentation.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.irum.global.advice.exception.GlobalExceptionHandler;
-import com.irum.global.advice.response.CommonResponseAdvice;
-import com.irum.paymentservice.domain.payment.domain.entity.enums.PaymentCorp;
-import com.irum.paymentservice.domain.payment.domain.entity.enums.PaymentMethod;
-import com.irum.paymentservice.domain.payment.domain.entity.enums.PaymentStatus;
+import com.irum.openfeign.payment.dto.request.CreatePaymentRequest;
+import com.irum.openfeign.payment.dto.request.UpdatePaymentStatusRequest;
+import com.irum.openfeign.payment.dto.response.PaymentResponse;
+import com.irum.openfeign.payment.emuns.PaymentCorp;
+import com.irum.openfeign.payment.emuns.PaymentMethod;
+import com.irum.openfeign.payment.emuns.PaymentStatus;
 import com.irum.paymentservice.domain.payment.internal.controller.PaymentInternalController;
-import com.irum.paymentservice.domain.payment.internal.dto.request.PaymentInternalRequest;
-import com.irum.paymentservice.domain.payment.internal.dto.request.PaymentStatusUpdateRequest;
-import com.irum.paymentservice.domain.payment.internal.dto.response.PaymentInternalResponse;
 import com.irum.paymentservice.domain.payment.internal.service.PaymentInternalService;
 import com.irum.paymentservice.global.config.TestConfig;
 import java.util.List;
@@ -28,10 +26,12 @@ import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDoc
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 
 @WebMvcTest(controllers = {PaymentInternalController.class})
 @AutoConfigureRestDocs
+@ActiveProfiles("test")
 @Import({TestConfig.class})
 public class PaymentInternalControllerTest {
     @Autowired private MockMvc mockMvc;
@@ -43,13 +43,7 @@ public class PaymentInternalControllerTest {
     void getPaymentAPITest() throws Exception {
         // given
         UUID paymentId = UUID.randomUUID();
-        PaymentInternalResponse response =
-                PaymentInternalResponse.builder()
-                        .paymentMethod(PaymentMethod.CARD)
-                        .paymentStatus(PaymentStatus.PAID)
-                        .amount(10000)
-                        .totalDiscountAmount(2000)
-                        .build();
+        PaymentResponse response = new PaymentResponse(PaymentStatus.PAID, PaymentMethod.CARD);
         when(paymentInternalService.getPayment(paymentId)).thenReturn(response);
 
         // when then
@@ -59,8 +53,6 @@ public class PaymentInternalControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.paymentMethod").value(response.paymentMethod().toString()))
                 .andExpect(jsonPath("$.paymentStatus").value(response.paymentStatus().toString()))
-                .andExpect(jsonPath("$.amount").value(response.amount()))
-                .andExpect(jsonPath("$.totalDiscountAmount").value(response.totalDiscountAmount()))
                 .andDo(
                         document(
                                 "payment-get",
@@ -68,9 +60,8 @@ public class PaymentInternalControllerTest {
                                         parameterWithName("paymentId").description("조회할 결제 ID")),
                                 responseFields(
                                         fieldWithPath("paymentMethod").description("결제 수단"),
-                                        fieldWithPath("paymentStatus").description("결제 상태"),
-                                        fieldWithPath("amount").description("결제 금액"),
-                                        fieldWithPath("totalDiscountAmount")
+                                        fieldWithPath("paymentStatus")
+                                                .description("결제 상태")
                                                 .description("할인 금액"))));
     }
 
@@ -80,12 +71,12 @@ public class PaymentInternalControllerTest {
         // given
         UUID id1 = UUID.randomUUID();
         UUID id2 = UUID.randomUUID();
-        PaymentStatusUpdateRequest request = new PaymentStatusUpdateRequest(List.of(id1, id2));
+        UpdatePaymentStatusRequest request = new UpdatePaymentStatusRequest(List.of(id1, id2));
         when(paymentInternalService.updatePaymentFailed(request)).thenReturn(2);
 
         // when then
         mockMvc.perform(
-                        patch("/internal/payments/failed")
+                        put("/internal/payments/failed")
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .content(objectMapper.writeValueAsString(request)))
                 .andExpect(jsonPath("$").value(2))
@@ -103,8 +94,8 @@ public class PaymentInternalControllerTest {
     void preparePaymentAPITest() throws Exception {
         // given
         UUID paymentId = UUID.randomUUID();
-        PaymentInternalRequest request = new PaymentInternalRequest(10000, 2000, PaymentCorp.TOSS);
-        when(paymentInternalService.preparePayment(any(PaymentInternalRequest.class)))
+        CreatePaymentRequest request = new CreatePaymentRequest(10000, 2000, PaymentCorp.TOSS);
+        when(paymentInternalService.preparePayment(any(CreatePaymentRequest.class)))
                 .thenReturn(paymentId);
 
         // when then

@@ -9,8 +9,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.irum.global.advice.exception.GlobalExceptionHandler;
-import com.irum.global.advice.response.CommonResponseAdvice;
 import com.irum.paymentservice.domain.payment.dto.request.PaymentRequest;
 import com.irum.paymentservice.domain.payment.dto.response.PaymentResponse;
 import com.irum.paymentservice.domain.payment.service.PaymentService;
@@ -25,11 +23,13 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.context.annotation.Import;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 
 @WebMvcTest(controllers = PaymentController.class)
 @AutoConfigureRestDocs
 @Import({TestConfig.class})
+@ActiveProfiles("test")
 public class PaymentControllerTest {
 
     @Autowired private MockMvc mockMvc;

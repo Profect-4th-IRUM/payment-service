@@ -46,3 +46,4 @@ out/
 ## common module
 gradle.properties
 liquibase.properties
+

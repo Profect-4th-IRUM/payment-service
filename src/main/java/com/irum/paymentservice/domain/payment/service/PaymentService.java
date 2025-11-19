@@ -51,7 +51,7 @@ public class PaymentService {
                     tosspaymentsClient.confirmPayment(request, payment.getAmount());
 
             // 상태 업데이트
-            payment.updateToPaid(PaymentStatus.PAID, tossPaymentsResponse);
+            payment.updateToPaid(tossPaymentsResponse);
 
             // order, orderdetail 상태 업데이트
             String OrderNum = "";
@@ -63,6 +63,7 @@ public class PaymentService {
                 log.error("[Feign] 주문 서비스 통신 에러 {} message {}", e, e.getMessage());
             }
             log.info("orderNum {}", OrderNum);
+
 
             return new PaymentResponse(OrderNum, payment.getAmount());
         } catch (FeignException e) {

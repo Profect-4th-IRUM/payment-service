@@ -1,99 +1,23 @@
-// package com.irum.paymentservice.global.config;
-//
-// import com.irum.global.infrastructure.config.GlobalAutoConfiguration;
-// import com.irum.paymentservice.domain.auth.application.service.AuthService;
-// import com.irum.paymentservice.domain.auth.application.service.JwtTokenService;
-// import com.irum.paymentservice.domain.cart.application.service.CartService;
-// import com.irum.paymentservice.domain.category.application.service.CategoryService;
-// import com.irum.paymentservice.domain.deliveryaddress.application.service.DeliveryAddressService;
-// import com.irum.paymentservice.domain.discount.application.service.DiscountService;
-// import com.irum.paymentservice.domain.member.application.service.ManagerService;
-// import com.irum.paymentservice.domain.member.application.service.MemberService;
-// import com.irum.paymentservice.domain.order.application.service.CustomerOrderService;
-// import com.irum.paymentservice.domain.order.application.service.OwnerOrderService;
-// import com.irum.paymentservice.domain.order.application.service.SalesService;
-// import com.irum.paymentservice.domain.product.application.service.ProductImageService;
-// import com.irum.paymentservice.domain.refund.application.service.RefundService;
-// import com.irum.paymentservice.domain.review.application.service.ReviewService;
-// import com.irum.paymentservice.global.util.CookieUtil;
-// import org.mockito.Mockito;
-// import org.springframework.boot.test.context.TestConfiguration;
-// import org.springframework.context.annotation.Bean;
-// import org.springframework.context.annotation.Import;
-//
-// @TestConfiguration
-// @Import(GlobalAutoConfiguration.class)
-// public class TestConfig {
-//    @Bean
-//    public MemberService memberService() {
-//        return Mockito.mock(MemberService.class);
-//    }
-//
-//    @Bean
-//    public ManagerService managerService() {
-//        return Mockito.mock(ManagerService.class);
-//    }
-//
-//    @Bean
-//    public AuthService authService() {
-//        return Mockito.mock(AuthService.class);
-//    }
-//
-//    @Bean
-//    public DeliveryAddressService deliveryAddressService() {
-//        return Mockito.mock(DeliveryAddressService.class);
-//    }
-//
-//    @Bean
-//    public CookieUtil cookieUtil() {
-//        return Mockito.mock(CookieUtil.class);
-//    }
-//
-//    @Bean
-//    public JwtTokenService jwtTokenService() {
-//        return Mockito.mock(JwtTokenService.class);
-//    }
-//
-//    @Bean
-//    public RefundService refundService() {
-//        return Mockito.mock(RefundService.class);
-//    }
-//
-//    @Bean
-//    public DiscountService discountService() {
-//        return Mockito.mock(DiscountService.class);
-//    }
-//
-//    @Bean
-//    public CategoryService categoryService() {
-//        return Mockito.mock(CategoryService.class);
-//    }
-//
-//    @Bean
-//    public ReviewService reviewService() {
-//        return Mockito.mock(ReviewService.class);
-//    }
-//
-//    public CartService cartService() {
-//        return Mockito.mock(CartService.class);
-//    }
-//
-//    public OwnerOrderService ownerOrderService() {
-//        return Mockito.mock(OwnerOrderService.class);
-//    }
-//
-//    @Bean
-//    public CustomerOrderService customerOrderService() {
-//        return Mockito.mock(CustomerOrderService.class);
-//    }
-//
-//    @Bean
-//    public SalesService salesService() {
-//        return Mockito.mock(SalesService.class);
-//    }
-//
-//    @Bean
-//    public ProductImageService productImageService() {
-//        return Mockito.mock(ProductImageService.class);
-//    }
-// }
+package com.irum.paymentservice.global.config;
+
+import com.irum.global.infrastructure.config.GlobalAutoConfiguration;
+import com.irum.paymentservice.domain.payment.internal.service.PaymentInternalService;
+import com.irum.paymentservice.domain.payment.service.PaymentService;
+import org.mockito.Mockito;
+import org.springframework.boot.test.context.TestConfiguration;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Import;
+
+@TestConfiguration
+@Import(GlobalAutoConfiguration.class)
+public class TestConfig {
+    @Bean
+    public PaymentService paymentService() {
+        return Mockito.mock(PaymentService.class);
+    }
+
+    @Bean
+    public PaymentInternalService paymentInternalService() {
+        return Mockito.mock(PaymentInternalService.class);
+    }
+}

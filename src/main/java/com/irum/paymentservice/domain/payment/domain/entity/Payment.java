@@ -49,8 +49,8 @@ public class Payment extends BaseEntity {
         this.paymentStatus = paymentStatus;
     }
 
-    public void updateToPaid(PaymentStatus ps, TossPaymentsResponse res) {
-        this.paymentStatus = ps;
+    public void updateToPaid(TossPaymentsResponse res) {
+        this.paymentStatus = PaymentStatus.PAID;
         this.tossPaymentKey = res.paymentKey();
         this.tossOrderId = res.orderId();
         this.paymentMethod = PaymentMethod.from(res.method());

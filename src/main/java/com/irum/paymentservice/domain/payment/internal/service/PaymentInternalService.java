@@ -47,6 +47,6 @@ public class PaymentInternalService {
     }
 
     public int updatePaymentFailed(PaymentStatusUpdateRequest request) {
-        return paymentRepository.updateStatusToFailedByIds(request.paymetIdList());
+        return paymentRepository.updateStatusToFailedByIds(request.paymentIdList());
     }
 }

@@ -4,8 +4,11 @@ import static org.assertj.core.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 import com.irum.global.advice.exception.CommonException;
+import com.irum.openfeign.payment.dto.request.CreatePaymentRequest;
+import com.irum.openfeign.payment.dto.request.UpdatePaymentStatusRequest;
+import com.irum.openfeign.payment.dto.response.PaymentResponse;
+import com.irum.openfeign.payment.emuns.PaymentCorp;
 import com.irum.paymentservice.domain.payment.domain.entity.Payment;
-import com.irum.paymentservice.domain.payment.domain.entity.enums.PaymentCorp;
 import com.irum.paymentservice.domain.payment.domain.entity.enums.PaymentMethod;
 import com.irum.paymentservice.domain.payment.domain.entity.enums.PaymentStatus;
 import com.irum.paymentservice.domain.payment.domain.repository.PaymentRepository;
@@ -37,7 +40,7 @@ public class PaymentInternalServiceTest {
     @DisplayName("preparePayment: 결제 준비(PENDING) 상태로 저장 성공")
     void preparePayment_Success() {
         // given
-        PaymentInternalRequest request = new PaymentInternalRequest(10000, 2000, PaymentCorp.TOSS);
+        CreatePaymentRequest request = new CreatePaymentRequest(10000, 2000, PaymentCorp.TOSS);
         Long currentMemberId = 123L;
         when(memberUtil.getCurrentMemberId()).thenReturn(currentMemberId);
 
@@ -50,7 +53,7 @@ public class PaymentInternalServiceTest {
                         .amount(request.finalPaymentAmount())
                         .totalDiscountAmount(request.discountAmount())
                         .paymentStatus(PaymentStatus.PENDING)
-                        .paymentCorp(request.paymentCorp())
+                        .paymentCorp(com.irum.paymentservice.domain.payment.domain.entity.enums.PaymentCorp.TOSS)
                         .build();
         when(paymentRepository.save(any(Payment.class))).thenReturn(savedPayment);
 
@@ -72,7 +75,7 @@ public class PaymentInternalServiceTest {
         assertThat(paymentToSave.getAmount()).isEqualTo(10000);
         assertThat(paymentToSave.getTotalDiscountAmount()).isEqualTo(2000);
         assertThat(paymentToSave.getPaymentStatus()).isEqualTo(PaymentStatus.PENDING);
-        assertThat(paymentToSave.getPaymentCorp()).isEqualTo(PaymentCorp.TOSS);
+        assertThat(paymentToSave.getPaymentCorp()).isEqualTo(com.irum.paymentservice.domain.payment.domain.entity.enums.PaymentCorp.TOSS);
     }
 
     @Test
@@ -92,14 +95,12 @@ public class PaymentInternalServiceTest {
         when(paymentRepository.findById(paymentId)).thenReturn(Optional.of(foundPayment));
 
         // when
-        PaymentInternalResponse response = paymentInternalService.getPayment(paymentId);
+        PaymentResponse response = paymentInternalService.getPayment(paymentId);
 
         // then
         assertThat(response).isNotNull();
-        assertThat(response.amount()).isEqualTo(foundPayment.getAmount());
-        assertThat(response.paymentMethod()).isEqualTo(foundPayment.getPaymentMethod());
-        assertThat(response.paymentStatus()).isEqualTo(foundPayment.getPaymentStatus());
-        assertThat(response.totalDiscountAmount()).isEqualTo(foundPayment.getTotalDiscountAmount());
+        assertThat(response.paymentMethod().toString()).isEqualTo(foundPayment.getPaymentMethod().toString());
+        assertThat(response.paymentStatus().toString()).isEqualTo(foundPayment.getPaymentStatus().toString());
 
         verify(paymentRepository, times(1)).findById(paymentId);
     }
@@ -127,7 +128,7 @@ public class PaymentInternalServiceTest {
         // given
         UUID id1 = UUID.randomUUID();
         UUID id2 = UUID.randomUUID();
-        PaymentStatusUpdateRequest request = new PaymentStatusUpdateRequest(List.of(id1, id2));
+        UpdatePaymentStatusRequest request = new UpdatePaymentStatusRequest(List.of(id1, id2));
 
         int expectedUpdatedRows = 2;
         when(paymentRepository.updateStatusToFailedByIds(request.paymentIdList()))

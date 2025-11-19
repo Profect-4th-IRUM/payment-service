@@ -32,7 +32,7 @@ public class PaymentService {
         Payment payment =
                 paymentRepository
                         .findById(request.paymentId())
-                        .orElseThrow(() -> new CommonException(PaymentErrorCode.PAYMENT_ERROR));
+                        .orElseThrow(() -> new CommonException(PaymentErrorCode.PAYMENT_NOT_FOUND));
 
         // 접근성 확인
         memberUtil.assertMemberResourceAccess(payment.getMemberId());
@@ -48,7 +48,7 @@ public class PaymentService {
                     tosspaymentsClient.confirmPayment(request, payment.getAmount());
 
             // 상태 업데이트
-            payment.updateToPaid(PaymentStatus.PAID, tossPaymentsResponse);
+            payment.updateToPaid(tossPaymentsResponse);
 
             // order, orderdetail 상태 업데이트
             String OrderNum =

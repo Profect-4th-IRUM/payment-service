@@ -8,11 +8,11 @@
 //
 // @TestConfiguration
 // public class SecurityTestConfig {
-//    @Bean
-//    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-//        http.formLogin(AbstractHttpConfigurer::disable)
-//                .csrf(AbstractHttpConfigurer::disable)
-//                .authorizeHttpRequests(auth -> auth.anyRequest().permitAll()); // ✅ 전부 허용
-//        return http.build();
-//    }
+//     @Bean
+//     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+//         http.formLogin(AbstractHttpConfigurer::disable)
+//                 .csrf(AbstractHttpConfigurer::disable)
+//                 .authorizeHttpRequests(auth -> auth.anyRequest().permitAll()); // ✅ 전부 허용
+//         return http.build();
+//     }
 // }

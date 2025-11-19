@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/internal/payments/")
+@RequestMapping("/internal/payments")
 public class PaymentInternalController {
     private final PaymentInternalService paymentInternalService;
 
@@ -19,7 +19,7 @@ public class PaymentInternalController {
         return paymentInternalService.getPayment(paymentId);
     }
 
-    @PatchMapping("failed")
+    @PatchMapping("/failed")
     public int updatePaymentFailed(@RequestBody PaymentStatusUpdateRequest request) {
         return paymentInternalService.updatePaymentFailed(request);
     }

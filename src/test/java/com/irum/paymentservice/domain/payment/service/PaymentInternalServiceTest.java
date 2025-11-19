@@ -12,9 +12,6 @@ import com.irum.paymentservice.domain.payment.domain.entity.Payment;
 import com.irum.paymentservice.domain.payment.domain.entity.enums.PaymentMethod;
 import com.irum.paymentservice.domain.payment.domain.entity.enums.PaymentStatus;
 import com.irum.paymentservice.domain.payment.domain.repository.PaymentRepository;
-import com.irum.paymentservice.domain.payment.internal.dto.request.PaymentInternalRequest;
-import com.irum.paymentservice.domain.payment.internal.dto.request.PaymentStatusUpdateRequest;
-import com.irum.paymentservice.domain.payment.internal.dto.response.PaymentInternalResponse;
 import com.irum.paymentservice.domain.payment.internal.service.PaymentInternalService;
 import com.irum.paymentservice.global.exception.errorcode.PaymentErrorCode;
 import com.irum.paymentservice.global.util.MemberUtil;
@@ -53,7 +50,9 @@ public class PaymentInternalServiceTest {
                         .amount(request.finalPaymentAmount())
                         .totalDiscountAmount(request.discountAmount())
                         .paymentStatus(PaymentStatus.PENDING)
-                        .paymentCorp(com.irum.paymentservice.domain.payment.domain.entity.enums.PaymentCorp.TOSS)
+                        .paymentCorp(
+                                com.irum.paymentservice.domain.payment.domain.entity.enums
+                                        .PaymentCorp.TOSS)
                         .build();
         when(paymentRepository.save(any(Payment.class))).thenReturn(savedPayment);
 
@@ -75,7 +74,10 @@ public class PaymentInternalServiceTest {
         assertThat(paymentToSave.getAmount()).isEqualTo(10000);
         assertThat(paymentToSave.getTotalDiscountAmount()).isEqualTo(2000);
         assertThat(paymentToSave.getPaymentStatus()).isEqualTo(PaymentStatus.PENDING);
-        assertThat(paymentToSave.getPaymentCorp()).isEqualTo(com.irum.paymentservice.domain.payment.domain.entity.enums.PaymentCorp.TOSS);
+        assertThat(paymentToSave.getPaymentCorp())
+                .isEqualTo(
+                        com.irum.paymentservice.domain.payment.domain.entity.enums.PaymentCorp
+                                .TOSS);
     }
 
     @Test
@@ -99,8 +101,10 @@ public class PaymentInternalServiceTest {
 
         // then
         assertThat(response).isNotNull();
-        assertThat(response.paymentMethod().toString()).isEqualTo(foundPayment.getPaymentMethod().toString());
-        assertThat(response.paymentStatus().toString()).isEqualTo(foundPayment.getPaymentStatus().toString());
+        assertThat(response.paymentMethod().toString())
+                .isEqualTo(foundPayment.getPaymentMethod().toString());
+        assertThat(response.paymentStatus().toString())
+                .isEqualTo(foundPayment.getPaymentStatus().toString());
 
         verify(paymentRepository, times(1)).findById(paymentId);
     }

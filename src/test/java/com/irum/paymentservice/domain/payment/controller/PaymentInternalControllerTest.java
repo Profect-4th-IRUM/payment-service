@@ -8,8 +8,6 @@ import static org.springframework.restdocs.request.RequestDocumentation.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.irum.global.advice.exception.GlobalExceptionHandler;
-import com.irum.global.advice.response.CommonResponseAdvice;
 import com.irum.openfeign.payment.dto.request.CreatePaymentRequest;
 import com.irum.openfeign.payment.dto.request.UpdatePaymentStatusRequest;
 import com.irum.openfeign.payment.dto.response.PaymentResponse;
@@ -17,9 +15,6 @@ import com.irum.openfeign.payment.emuns.PaymentCorp;
 import com.irum.openfeign.payment.emuns.PaymentMethod;
 import com.irum.openfeign.payment.emuns.PaymentStatus;
 import com.irum.paymentservice.domain.payment.internal.controller.PaymentInternalController;
-import com.irum.paymentservice.domain.payment.internal.dto.request.PaymentInternalRequest;
-import com.irum.paymentservice.domain.payment.internal.dto.request.PaymentStatusUpdateRequest;
-import com.irum.paymentservice.domain.payment.internal.dto.response.PaymentInternalResponse;
 import com.irum.paymentservice.domain.payment.internal.service.PaymentInternalService;
 import com.irum.paymentservice.global.config.TestConfig;
 import java.util.List;
@@ -65,7 +60,8 @@ public class PaymentInternalControllerTest {
                                         parameterWithName("paymentId").description("조회할 결제 ID")),
                                 responseFields(
                                         fieldWithPath("paymentMethod").description("결제 수단"),
-                                        fieldWithPath("paymentStatus").description("결제 상태")
+                                        fieldWithPath("paymentStatus")
+                                                .description("결제 상태")
                                                 .description("할인 금액"))));
     }
 

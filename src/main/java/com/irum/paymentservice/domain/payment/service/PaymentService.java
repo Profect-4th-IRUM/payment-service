@@ -64,7 +64,6 @@ public class PaymentService {
             }
             log.info("orderNum {}", OrderNum);
 
-
             return new PaymentResponse(OrderNum, payment.getAmount());
         } catch (FeignException e) {
             // 추후에 Feign client error decoder로 변환하면 좋을 듯

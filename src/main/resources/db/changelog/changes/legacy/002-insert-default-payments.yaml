@@ -1,6 +1,6 @@
 databaseChangeLog:
   - changeSet:
-      id: insert-payment-data-1
+      id: insert-data-payment-1
       author: hyeonji91
       comment: "결제 정보 삽입"
 

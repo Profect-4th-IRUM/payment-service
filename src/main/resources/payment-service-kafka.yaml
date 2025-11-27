@@ -1,0 +1,23 @@
+spring:
+  config:
+    activate:
+      on-profile: "kafka"
+  kafka:
+    producer:
+      bootstrap-servers: ${KAFKA_HOST}:${KAFKA_PORT}
+      # 메시지 키는 String
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      # 메시지 값은 json
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+      acks: all
+
+    partition: ${NUM_OF_PARTITION}
+    replica: ${NUM_OF_REPLICA}
+
+
+  logging:
+    level:
+      com.adjh.springbootkafka: DEBUG
+      org:
+        apache.kafka: INFO
+        springframework.kafka: INFO

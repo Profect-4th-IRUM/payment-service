@@ -7,4 +7,5 @@ public record KafkaProperties (
         int partition,
         int replica
 ){
+
 }

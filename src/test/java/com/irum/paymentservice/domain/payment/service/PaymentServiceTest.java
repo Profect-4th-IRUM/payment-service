@@ -86,7 +86,6 @@ public class PaymentServiceTest {
         // then
         // 반환값 확인
         assertThat(response).isNotNull();
-        assertThat(response.orderNum()).isEqualTo(TEST_ORDER_NUM);
         assertThat(response.totalAmount()).isEqualTo(TEST_AMOUNT);
 
         // 한번 호출

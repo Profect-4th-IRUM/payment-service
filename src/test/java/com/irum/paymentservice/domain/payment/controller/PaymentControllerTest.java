@@ -41,11 +41,10 @@ public class PaymentControllerTest {
     void paymentCreateApiTest() throws Exception {
         UUID orderId = UUID.randomUUID();
         UUID paymentId = UUID.randomUUID();
-        String orderNum = "ORD-777777";
         int totalAmount = 10000;
         PaymentRequest request =
                 new PaymentRequest("tossOrderId", orderId, "tosspaymentkey", paymentId);
-        PaymentResponse response = new PaymentResponse(orderNum, totalAmount);
+        PaymentResponse response = new PaymentResponse(totalAmount);
 
         Mockito.when(paymentService.createPayment(request)).thenReturn(response);
 
@@ -58,7 +57,6 @@ public class PaymentControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.success").value(true))
                 .andExpect(jsonPath("$.status").value(HttpStatus.OK.value()))
-                .andExpect(jsonPath("$.data.orderNum").value(orderNum))
                 .andExpect(jsonPath("$.data.totalAmount").value(totalAmount))
                 .andDo(
                         document(
@@ -78,7 +76,6 @@ public class PaymentControllerTest {
                                         subsectionWithPath("data").description("응답 데이터 객체")),
                                 responseFields(
                                         beneathPath("data").withSubsectionId("data"),
-                                        fieldWithPath("orderNum").description("주문 번호"),
                                         fieldWithPath("totalAmount").description("실 결제 금액"))));
     }
 }

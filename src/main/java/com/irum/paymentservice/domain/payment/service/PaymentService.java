@@ -41,7 +41,7 @@ public class PaymentService {
 
         // 접근성 확인
         memberUtil.assertMemberResourceAccess(payment.getMemberId());
-        log.info("[검증] 멤버 검증 완료 {}", memberUtil.getCurrentMemberId());
+        log.info("[검증] 멤버 검증 완료 {}", payment.getPaymentId());
 
         // pending 상태인지 확인 (이미 처리된 결제 등)
         if (!payment.getPaymentStatus().equals(PaymentStatus.PENDING)) {
@@ -70,14 +70,18 @@ public class PaymentService {
             // 상태 업데이트
             paymentStatusService.updatePaymentStatusFailed(payment.getPaymentId());
 
-            try {
-                // order, orderdetail 상태 업데이트, 재고 롤백, 쿠폰 롤백
-                orderAPI.updateOrderStatusFailed(
-                        OrderStatus.FAILED, request.orderId(), request.paymentId());
-            } catch (Exception orderException) {
-                log.error("[에러] exception {} {}", orderException, orderException.getMessage());
-            }
-            log.info("[Feign] orderAPI.updateOrderStatusFailed 완료");
+            // order, orderdetail 상태 업데이트, 재고 롤백, 쿠폰 롤백
+            paymentEventProducer.sendPaymentFailedEvent(request.orderId(), request.paymentId(), OrderStatus.FAILED);
+            log.info("[외부] paymentFailedEvent 발행 완료");
+
+//            try {
+//                // order, orderdetail 상태 업데이트, 재고 롤백, 쿠폰 롤백
+//                orderAPI.updateOrderStatusFailed(
+//                        OrderStatus.FAILED, request.orderId(), request.paymentId());
+//            } catch (Exception orderException) {
+//                log.error("[에러] exception {} {}", orderException, orderException.getMessage());
+//            }
+//            log.info("[Feign] orderAPI.updateOrderStatusFailed 완료");
 
             throw new CommonException(PaymentErrorCode.PAYMENT_ERROR);
         }

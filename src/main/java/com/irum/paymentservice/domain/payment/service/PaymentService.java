@@ -8,6 +8,7 @@ import com.irum.paymentservice.domain.payment.domain.repository.PaymentRepositor
 import com.irum.paymentservice.domain.payment.dto.request.PaymentRequest;
 import com.irum.paymentservice.domain.payment.dto.response.PaymentResponse;
 import com.irum.paymentservice.domain.payment.producer.PaymentEventProducer;
+import com.irum.paymentservice.global.exception.errorcode.GlobalErrorCode;
 import com.irum.paymentservice.global.exception.errorcode.PaymentErrorCode;
 import com.irum.paymentservice.global.util.MemberUtil;
 import com.irum.paymentservice.openfeign.order.OrderAPI;
@@ -18,6 +19,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import static com.irum.paymentservice.domain.payment.domain.entity.QPayment.payment;
 
 @Service
 @Slf4j
@@ -40,15 +43,10 @@ public class PaymentService {
         log.info("[조회] Payment 조회 완료 {}", payment.getPaymentId());
 
         // 접근성 확인
-        memberUtil.assertMemberResourceAccess(payment.getMemberId());
-        log.info("[검증] 멤버 검증 완료 {}", payment.getPaymentId());
+        validateResourceAccess(payment.getMemberId());
 
         // pending 상태인지 확인 (이미 처리된 결제 등)
-        if (!payment.getPaymentStatus().equals(PaymentStatus.PENDING)) {
-            log.info("[검증] 이미 처리된 결제입니다 {}", payment.getPaymentStatus());
-            throw new CommonException(PaymentErrorCode.PAYMENT_BAD_REQUEST);
-        }
-        log.info("Creating payment with payment id {}", payment.getPaymentId());
+        validatePaymentStatus(payment);
 
         try {
             // 토스 페이먼츠 승인 API호출
@@ -74,16 +72,27 @@ public class PaymentService {
             paymentEventProducer.sendPaymentFailedEvent(request.orderId(), request.paymentId(), OrderStatus.FAILED);
             log.info("[외부] paymentFailedEvent 발행 완료");
 
-//            try {
-//                // order, orderdetail 상태 업데이트, 재고 롤백, 쿠폰 롤백
-//                orderAPI.updateOrderStatusFailed(
-//                        OrderStatus.FAILED, request.orderId(), request.paymentId());
-//            } catch (Exception orderException) {
-//                log.error("[에러] exception {} {}", orderException, orderException.getMessage());
-//            }
-//            log.info("[Feign] orderAPI.updateOrderStatusFailed 완료");
-
             throw new CommonException(PaymentErrorCode.PAYMENT_ERROR);
         }
+    }
+
+    /**접근성 확인*/
+    private void validateResourceAccess(Long paymentMemberId) {
+        try {
+            memberUtil.assertMemberResourceAccess(paymentMemberId);
+        } catch (Exception e) {
+            log.info("error {}. {}",e.getClass().toString(), e.getMessage());
+            throw new CommonException(GlobalErrorCode.MEMBER_SERVICE_ERROR);
+        }
+        log.info("[검증] 멤버 검증 완료 {}", paymentMemberId);
+    }
+
+    /**pending 상태인지 확인 (이미 처리된 결제 등)*/
+    private void validatePaymentStatus(Payment payment) {
+        if (!payment.getPaymentStatus().equals(PaymentStatus.PENDING)) {
+            log.info("[검증] 이미 처리된 결제입니다 {}", payment.getPaymentStatus());
+            throw new CommonException(PaymentErrorCode.PAYMENT_BAD_REQUEST);
+        }
+        log.info("Creating payment with payment id {}", payment.getPaymentId());
     }
 }

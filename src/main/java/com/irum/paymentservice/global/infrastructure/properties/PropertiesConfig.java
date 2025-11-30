@@ -5,8 +5,8 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 @EnableConfigurationProperties({
-        TossProperties.class,
-        KafkaProperties.class,
-        KafkaTopicProperties.class
+    TossProperties.class,
+    KafkaProperties.class,
+    KafkaTopicProperties.class
 })
 public class PropertiesConfig {}

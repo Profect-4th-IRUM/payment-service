@@ -39,7 +39,6 @@ public class PaymentService {
                         .orElseThrow(() -> new CommonException(PaymentErrorCode.PAYMENT_NOT_FOUND));
         log.info("[조회] Payment 조회 완료 {}", payment.getPaymentId());
 
-
         // 접근성 확인
         memberUtil.assertMemberResourceAccess(payment.getMemberId());
         log.info("[검증] 멤버 검증 완료 {}", memberUtil.getCurrentMemberId());
@@ -61,16 +60,6 @@ public class PaymentService {
             payment.updateToPaid(tossPaymentsResponse);
             log.info("[DB] Payment Paid 상태 업데이트 완료");
 
-            // order, orderdetail 상태 업데이트
-//            String OrderNum = "";
-//            try {
-//                OrderNum =
-//                        orderAPI.updateOrderStatusPreparing(
-//                                OrderStatus.PREPARING, request.orderId());
-//            } catch (Exception e) {
-//                log.error("[Feign] 주문 서비스 통신 에러 {} message {}", e, e.getMessage());
-//            }
-//            log.info("orderNum {}", OrderNum);
             paymentEventProducer.sendPaymentPaidEvent(OrderStatus.PREPARING, request.orderId());
             log.info("[외부] paymentPaidEvent 발행 완료");
 

@@ -9,6 +9,9 @@ spring:
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
       # 메시지 값은 json
       value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+      properties:
+        spring.json:
+          type.mapping: "paymentPaidEvent: com.irum.paymentservice.domain.payment.event.PaymentPaidEvent"
       acks: all
     partition: ${NUM_OF_PARTITION}
     replica: ${NUM_OF_REPLICA}

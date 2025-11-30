@@ -1,0 +1,6 @@
+spring:
+  config:
+    on-profile: "docker"
+
+server:
+  prot: ${PAYMENT_PORT:60004}

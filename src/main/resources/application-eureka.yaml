@@ -1,0 +1,18 @@
+spring:
+  config:
+    activate:
+      on-profile: "eureka"
+
+eureka:
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      defaultZone: http://${EUREKA_HOST:localhost}:${EUREKA_PORT:8761}/eureka
+  instance:
+    prefer-ip-address: false
+    hostname: ${PAYMENT_HOSTNAME:payment.come2us.local}
+    ip-address: ${PAYMENT_HOSTNAME}
+    instance-id: ${PAYMENT_HOSTNAME}:${PAYMENT_PORT}
+    metadata-map:
+      port: ${PAYMENT_PORT}

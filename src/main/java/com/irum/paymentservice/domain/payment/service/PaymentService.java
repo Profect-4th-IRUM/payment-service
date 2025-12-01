@@ -1,5 +1,7 @@
 package com.irum.paymentservice.domain.payment.service;
 
+import static com.irum.paymentservice.domain.payment.domain.entity.QPayment.payment;
+
 import com.irum.global.advice.exception.CommonException;
 import com.irum.openfeign.order.enums.OrderStatus;
 import com.irum.paymentservice.domain.payment.domain.entity.Payment;
@@ -19,8 +21,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import static com.irum.paymentservice.domain.payment.domain.entity.QPayment.payment;
 
 @Service
 @Slf4j
@@ -69,25 +69,26 @@ public class PaymentService {
             paymentStatusService.updatePaymentStatusFailed(payment.getPaymentId());
 
             // order, orderdetail 상태 업데이트, 재고 롤백, 쿠폰 롤백
-            paymentEventProducer.sendPaymentFailedEvent(request.orderId(), request.paymentId(), OrderStatus.FAILED);
+            paymentEventProducer.sendPaymentFailedEvent(
+                    request.orderId(), request.paymentId(), OrderStatus.FAILED);
             log.info("[외부] paymentFailedEvent 발행 완료");
 
             throw new CommonException(PaymentErrorCode.PAYMENT_ERROR);
         }
     }
 
-    /**접근성 확인*/
+    /** 접근성 확인 */
     private void validateResourceAccess(Long paymentMemberId) {
         try {
             memberUtil.assertMemberResourceAccess(paymentMemberId);
         } catch (Exception e) {
-            log.info("error {}. {}",e.getClass().toString(), e.getMessage());
+            log.info("error {}. {}", e.getClass().toString(), e.getMessage());
             throw new CommonException(GlobalErrorCode.MEMBER_SERVICE_ERROR);
         }
         log.info("[검증] 멤버 검증 완료 {}", paymentMemberId);
     }
 
-    /**pending 상태인지 확인 (이미 처리된 결제 등)*/
+    /** pending 상태인지 확인 (이미 처리된 결제 등) */
     private void validatePaymentStatus(Payment payment) {
         if (!payment.getPaymentStatus().equals(PaymentStatus.PENDING)) {
             log.info("[검증] 이미 처리된 결제입니다 {}", payment.getPaymentStatus());

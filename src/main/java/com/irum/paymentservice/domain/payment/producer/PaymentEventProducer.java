@@ -50,7 +50,7 @@ public class PaymentEventProducer {
     public void sendPaymentFailedEvent(UUID orderId, UUID paymentId, OrderStatus orderStatus) {
         PaymentFailedEvent event = PaymentFailedEvent.from(orderId, paymentId, orderStatus);
         String key = event.orderId().toString();
-        ProducerRecord<String, PaymentFailedEvent>  record =
+        ProducerRecord<String, PaymentFailedEvent> record =
                 new ProducerRecord<>(kafkaTopicProperties.paymentFailed(), key, event);
 
         try {
@@ -72,6 +72,5 @@ public class PaymentEventProducer {
         } catch (Exception e) {
             log.error("[Error] sending payment failed event : {}", event, e);
         }
-
     }
 }

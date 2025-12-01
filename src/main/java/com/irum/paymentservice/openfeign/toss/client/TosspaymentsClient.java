@@ -12,5 +12,6 @@ import org.springframework.web.bind.annotation.RequestHeader;
 public interface TosspaymentsClient {
     @PostMapping("/v1/payments/confirm")
     TossPaymentsResponse confirmPayment(
+            @RequestHeader("idempotency-key") String idempotencyKey,
             @RequestHeader("Authorization") String auth, @RequestBody TossPaymentsRequest request);
 }

@@ -30,7 +30,6 @@ public class PaymentService {
     private final TosspaymentsAPI tosspaymentsAPI;
     private final PaymentRepository paymentRepository;
     private final MemberUtil memberUtil;
-    private final OrderAPI orderAPI;
     private final PaymentStatusService paymentStatusService;
     private final PaymentEventProducer paymentEventProducer;
 
@@ -51,7 +50,7 @@ public class PaymentService {
         try {
             // 토스 페이먼츠 승인 API호출
             TossPaymentsResponse tossPaymentsResponse =
-                    tosspaymentsAPI.confirmPayment(request, payment.getAmount());
+                    tosspaymentsAPI.confirmPayment(request, payment.getAmount(), payment.getIdempotencyKey());
             log.info("[외부] 토스 페이먼츠 승인 완료");
 
             // 상태 업데이트

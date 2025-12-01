@@ -18,7 +18,8 @@ public class TosspaymentsAPI {
     private final TossProperties tossProperties;
     private final TosspaymentsClient tosspaymentsClient;
 
-    public TossPaymentsResponse confirmPayment(PaymentRequest request, int paymentAmount, String idempotencyKey) {
+    public TossPaymentsResponse confirmPayment(
+            PaymentRequest request, int paymentAmount, String idempotencyKey) {
         Base64.Encoder encoder = Base64.getEncoder();
         byte[] encodedBytes =
                 encoder.encode((tossProperties.secretKey() + ":").getBytes(StandardCharsets.UTF_8));
@@ -30,7 +31,7 @@ public class TosspaymentsAPI {
                         request.tossPaymentKey(), request.tossOrderId(), paymentAmount);
         log.info("Toss Payment Request: {}", tossPaymentsRequest.toString());
 
-
-        return tosspaymentsClient.confirmPayment(idempotencyKey, authorizations, tossPaymentsRequest);
+        return tosspaymentsClient.confirmPayment(
+                idempotencyKey, authorizations, tossPaymentsRequest);
     }
 }

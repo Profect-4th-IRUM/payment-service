@@ -11,6 +11,7 @@ import com.irum.paymentservice.domain.payment.domain.entity.enums.PaymentStatus;
 import com.irum.paymentservice.domain.payment.domain.repository.PaymentRepository;
 import com.irum.paymentservice.domain.payment.dto.request.PaymentRequest;
 import com.irum.paymentservice.domain.payment.dto.response.PaymentResponse;
+import com.irum.paymentservice.domain.payment.producer.PaymentEventProducer;
 import com.irum.paymentservice.global.exception.errorcode.PaymentErrorCode;
 import com.irum.paymentservice.global.util.MemberUtil;
 import com.irum.paymentservice.openfeign.order.OrderAPI;
@@ -37,6 +38,8 @@ public class PaymentServiceTest {
     @Mock PaymentRepository paymentRepository;
     @Mock MemberUtil memberUtil;
     @Mock OrderAPI orderAPI;
+    @Mock
+    PaymentEventProducer paymentEventProducer;
     @Mock Payment payment;
     @Mock PaymentStatusService paymentStatusService;
 
@@ -76,9 +79,7 @@ public class PaymentServiceTest {
 
         // tosspaymentsAPI 호출
         when(tosspaymentsAPI.confirmPayment(paymentRequest, TEST_AMOUNT)).thenReturn(tossResponse);
-        // orderAPI 호출
-        when(orderAPI.updateOrderStatusPreparing(OrderStatus.PREPARING, TEST_ORDER_ID))
-                .thenReturn(TEST_ORDER_NUM);
+        
 
         // when
         PaymentResponse response = paymentService.createPayment(paymentRequest);
@@ -93,11 +94,11 @@ public class PaymentServiceTest {
         verify(memberUtil, times(1)).assertMemberResourceAccess(TEST_MEMBER_ID);
         verify(tosspaymentsAPI, times(1)).confirmPayment(paymentRequest, TEST_AMOUNT);
         verify(payment, times(1)).updateToPaid(tossResponse);
-        verify(orderAPI, times(1)).updateOrderStatusPreparing(OrderStatus.PREPARING, TEST_ORDER_ID);
+        verify(paymentEventProducer, times(1)).sendPaymentPaidEvent(OrderStatus.PREPARING, TEST_ORDER_ID);
 
         // 실패 로직 호출 x
         verify(payment, never()).updateStatus(PaymentStatus.FAILED);
-        verify(orderAPI, never()).updateOrderStatusFailed(any(), any(), any());
+        verify(paymentEventProducer, never()).sendPaymentFailedEvent(any(), any(), any());
     }
 
     @Test
@@ -170,10 +171,9 @@ public class PaymentServiceTest {
         // then
         verify(tosspaymentsAPI, times(1)).confirmPayment(paymentRequest, TEST_AMOUNT);
         // 실패 로직 1번씩 호출
-        verify(orderAPI, times(1))
-                .updateOrderStatusFailed(OrderStatus.FAILED, TEST_ORDER_ID, TEST_PAYMENT_ID);
+        verify(paymentEventProducer, times(1)).sendPaymentFailedEvent(any(), any(), any());
         // 성공 로직 호출 x
         verify(payment, never()).updateToPaid(any());
-        verify(orderAPI, never()).updateOrderStatusPreparing(any(), any());
+        verify(paymentEventProducer, never()).sendPaymentPaidEvent(any(), any());
     }
 }

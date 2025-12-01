@@ -47,6 +47,7 @@ public class PaymentServiceTest {
     private TossPaymentsResponse tossResponse;
     private final UUID TEST_PAYMENT_ID = UUID.randomUUID();
     private final UUID TEST_ORDER_ID = UUID.randomUUID();
+    private final String TEST_IDEMPOTENCY_KEY = UUID.randomUUID().toString();
     private final String TEST_ORDER_NUM = "ORD-0000000";
     private final Long TEST_MEMBER_ID = 123L;
     private final int TEST_AMOUNT = 10000;
@@ -75,9 +76,11 @@ public class PaymentServiceTest {
 
         when(payment.getPaymentStatus()).thenReturn(PaymentStatus.PENDING);
         when(payment.getAmount()).thenReturn(TEST_AMOUNT);
+        when(payment.getIdempotencyKey()).thenReturn(TEST_IDEMPOTENCY_KEY);
 
         // tosspaymentsAPI 호출
-        when(tosspaymentsAPI.confirmPayment(paymentRequest, TEST_AMOUNT)).thenReturn(tossResponse);
+        when(tosspaymentsAPI.confirmPayment(paymentRequest, TEST_AMOUNT, TEST_IDEMPOTENCY_KEY))
+                .thenReturn(tossResponse);
 
         // when
         PaymentResponse response = paymentService.createPayment(paymentRequest);
@@ -90,7 +93,8 @@ public class PaymentServiceTest {
         // 한번 호출
         verify(paymentRepository, times(1)).findById(TEST_PAYMENT_ID);
         verify(memberUtil, times(1)).assertMemberResourceAccess(TEST_MEMBER_ID);
-        verify(tosspaymentsAPI, times(1)).confirmPayment(paymentRequest, TEST_AMOUNT);
+        verify(tosspaymentsAPI, times(1))
+                .confirmPayment(paymentRequest, TEST_AMOUNT, TEST_IDEMPOTENCY_KEY);
         verify(payment, times(1)).updateToPaid(tossResponse);
         verify(paymentEventProducer, times(1))
                 .sendPaymentPaidEvent(OrderStatus.PREPARING, TEST_ORDER_ID);
@@ -113,7 +117,7 @@ public class PaymentServiceTest {
                 .isEqualTo(PaymentErrorCode.PAYMENT_NOT_FOUND);
 
         verify(memberUtil, never()).assertMemberResourceAccess(anyLong());
-        verify(tosspaymentsAPI, never()).confirmPayment(any(), anyInt());
+        verify(tosspaymentsAPI, never()).confirmPayment(any(), anyInt(), anyString());
         verify(orderAPI, never()).updateOrderStatusPreparing(any(), any());
     }
 
@@ -133,7 +137,7 @@ public class PaymentServiceTest {
                 .extracting("errorCode")
                 .isEqualTo(PaymentErrorCode.PAYMENT_BAD_REQUEST);
 
-        verify(tosspaymentsAPI, never()).confirmPayment(any(), anyInt());
+        verify(tosspaymentsAPI, never()).confirmPayment(any(), anyInt(), anyString());
         verify(orderAPI, never()).updateOrderStatusPreparing(any(), any());
     }
 
@@ -148,6 +152,7 @@ public class PaymentServiceTest {
 
         when(payment.getPaymentStatus()).thenReturn(PaymentStatus.PENDING);
         when(payment.getAmount()).thenReturn(TEST_AMOUNT);
+        when(payment.getIdempotencyKey()).thenReturn(TEST_IDEMPOTENCY_KEY);
 
         // toss 호출 에러
         Request dummyRequest =
@@ -157,7 +162,8 @@ public class PaymentServiceTest {
                         Collections.emptyMap(),
                         (byte[]) null,
                         null);
-        when(tosspaymentsAPI.confirmPayment(any(PaymentRequest.class), eq(TEST_AMOUNT)))
+        when(tosspaymentsAPI.confirmPayment(
+                        any(PaymentRequest.class), eq(TEST_AMOUNT), eq(TEST_IDEMPOTENCY_KEY)))
                 .thenThrow(
                         new FeignException.InternalServerError("결제실패", dummyRequest, null, null));
 
@@ -168,7 +174,8 @@ public class PaymentServiceTest {
                 .isEqualTo(PaymentErrorCode.PAYMENT_ERROR);
 
         // then
-        verify(tosspaymentsAPI, times(1)).confirmPayment(paymentRequest, TEST_AMOUNT);
+        verify(tosspaymentsAPI, times(1))
+                .confirmPayment(paymentRequest, TEST_AMOUNT, TEST_IDEMPOTENCY_KEY);
         // 실패 로직 1번씩 호출
         verify(paymentEventProducer, times(1)).sendPaymentFailedEvent(any(), any(), any());
         // 성공 로직 호출 x

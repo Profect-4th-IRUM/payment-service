@@ -10,6 +10,7 @@ import com.irum.paymentservice.domain.payment.domain.entity.enums.PaymentStatus;
 import com.irum.paymentservice.domain.payment.domain.repository.PaymentRepository;
 import com.irum.paymentservice.domain.payment.internal.PaymentResponseMapper;
 import com.irum.paymentservice.global.exception.errorcode.PaymentErrorCode;
+import com.irum.paymentservice.global.util.IdempotencyKeyUtil;
 import com.irum.paymentservice.global.util.MemberUtil;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
@@ -38,6 +39,7 @@ public class PaymentInternalService {
                         .totalDiscountAmount(request.discountAmount())
                         .paymentStatus(PaymentStatus.PENDING)
                         .paymentCorp(PaymentCorp.valueOf(request.paymentCorp().toString()))
+                        .idempotencyKey(IdempotencyKeyUtil.generateKey())
                         .build();
         log.info("[비즈니스] payment 생성: {}", payment);
 

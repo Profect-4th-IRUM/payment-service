@@ -13,7 +13,6 @@ import com.irum.paymentservice.domain.payment.producer.PaymentEventProducer;
 import com.irum.paymentservice.global.exception.errorcode.GlobalErrorCode;
 import com.irum.paymentservice.global.exception.errorcode.PaymentErrorCode;
 import com.irum.paymentservice.global.util.MemberUtil;
-import com.irum.paymentservice.openfeign.order.OrderAPI;
 import com.irum.paymentservice.openfeign.toss.TosspaymentsAPI;
 import com.irum.paymentservice.openfeign.toss.dto.TossPaymentsResponse;
 import feign.FeignException;
@@ -30,7 +29,6 @@ public class PaymentService {
     private final TosspaymentsAPI tosspaymentsAPI;
     private final PaymentRepository paymentRepository;
     private final MemberUtil memberUtil;
-    private final OrderAPI orderAPI;
     private final PaymentStatusService paymentStatusService;
     private final PaymentEventProducer paymentEventProducer;
 
@@ -51,7 +49,8 @@ public class PaymentService {
         try {
             // 토스 페이먼츠 승인 API호출
             TossPaymentsResponse tossPaymentsResponse =
-                    tosspaymentsAPI.confirmPayment(request, payment.getAmount());
+                    tosspaymentsAPI.confirmPayment(
+                            request, payment.getAmount(), payment.getIdempotencyKey());
             log.info("[외부] 토스 페이먼츠 승인 완료");
 
             // 상태 업데이트

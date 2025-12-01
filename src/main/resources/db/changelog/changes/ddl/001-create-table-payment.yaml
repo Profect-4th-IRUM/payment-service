@@ -38,6 +38,9 @@ databaseChangeLog:
                   name: member_id
                   type: BIGINT
               - column:
+                  name: idempotency_key
+                  type: VARCHAR(255)
+              - column:
                   name: created_at
                   type: TIMESTAMP WITH TIME ZONE
                   constraints:

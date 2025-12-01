@@ -45,6 +45,8 @@ public class Payment extends BaseEntity {
 
     private Long memberId;
 
+    private String idempotencyKey;
+
     public void updateStatus(PaymentStatus paymentStatus) {
         this.paymentStatus = paymentStatus;
     }

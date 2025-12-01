@@ -79,7 +79,8 @@ public class PaymentServiceTest {
         when(payment.getIdempotencyKey()).thenReturn(TEST_IDEMPOTENCY_KEY);
 
         // tosspaymentsAPI 호출
-        when(tosspaymentsAPI.confirmPayment(paymentRequest, TEST_AMOUNT, TEST_IDEMPOTENCY_KEY)).thenReturn(tossResponse);
+        when(tosspaymentsAPI.confirmPayment(paymentRequest, TEST_AMOUNT, TEST_IDEMPOTENCY_KEY))
+                .thenReturn(tossResponse);
 
         // when
         PaymentResponse response = paymentService.createPayment(paymentRequest);
@@ -92,7 +93,8 @@ public class PaymentServiceTest {
         // 한번 호출
         verify(paymentRepository, times(1)).findById(TEST_PAYMENT_ID);
         verify(memberUtil, times(1)).assertMemberResourceAccess(TEST_MEMBER_ID);
-        verify(tosspaymentsAPI, times(1)).confirmPayment(paymentRequest, TEST_AMOUNT, TEST_IDEMPOTENCY_KEY);
+        verify(tosspaymentsAPI, times(1))
+                .confirmPayment(paymentRequest, TEST_AMOUNT, TEST_IDEMPOTENCY_KEY);
         verify(payment, times(1)).updateToPaid(tossResponse);
         verify(paymentEventProducer, times(1))
                 .sendPaymentPaidEvent(OrderStatus.PREPARING, TEST_ORDER_ID);
@@ -160,7 +162,8 @@ public class PaymentServiceTest {
                         Collections.emptyMap(),
                         (byte[]) null,
                         null);
-        when(tosspaymentsAPI.confirmPayment(any(PaymentRequest.class), eq(TEST_AMOUNT), eq(TEST_IDEMPOTENCY_KEY)))
+        when(tosspaymentsAPI.confirmPayment(
+                        any(PaymentRequest.class), eq(TEST_AMOUNT), eq(TEST_IDEMPOTENCY_KEY)))
                 .thenThrow(
                         new FeignException.InternalServerError("결제실패", dummyRequest, null, null));
 
@@ -171,7 +174,8 @@ public class PaymentServiceTest {
                 .isEqualTo(PaymentErrorCode.PAYMENT_ERROR);
 
         // then
-        verify(tosspaymentsAPI, times(1)).confirmPayment(paymentRequest, TEST_AMOUNT, TEST_IDEMPOTENCY_KEY);
+        verify(tosspaymentsAPI, times(1))
+                .confirmPayment(paymentRequest, TEST_AMOUNT, TEST_IDEMPOTENCY_KEY);
         // 실패 로직 1번씩 호출
         verify(paymentEventProducer, times(1)).sendPaymentFailedEvent(any(), any(), any());
         // 성공 로직 호출 x

@@ -38,8 +38,7 @@ public class PaymentServiceTest {
     @Mock PaymentRepository paymentRepository;
     @Mock MemberUtil memberUtil;
     @Mock OrderAPI orderAPI;
-    @Mock
-    PaymentEventProducer paymentEventProducer;
+    @Mock PaymentEventProducer paymentEventProducer;
     @Mock Payment payment;
     @Mock PaymentStatusService paymentStatusService;
 
@@ -79,7 +78,6 @@ public class PaymentServiceTest {
 
         // tosspaymentsAPI 호출
         when(tosspaymentsAPI.confirmPayment(paymentRequest, TEST_AMOUNT)).thenReturn(tossResponse);
-        
 
         // when
         PaymentResponse response = paymentService.createPayment(paymentRequest);
@@ -94,7 +92,8 @@ public class PaymentServiceTest {
         verify(memberUtil, times(1)).assertMemberResourceAccess(TEST_MEMBER_ID);
         verify(tosspaymentsAPI, times(1)).confirmPayment(paymentRequest, TEST_AMOUNT);
         verify(payment, times(1)).updateToPaid(tossResponse);
-        verify(paymentEventProducer, times(1)).sendPaymentPaidEvent(OrderStatus.PREPARING, TEST_ORDER_ID);
+        verify(paymentEventProducer, times(1))
+                .sendPaymentPaidEvent(OrderStatus.PREPARING, TEST_ORDER_ID);
 
         // 실패 로직 호출 x
         verify(payment, never()).updateStatus(PaymentStatus.FAILED);

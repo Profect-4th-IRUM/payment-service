@@ -1,0 +1,19 @@
+package com.irum.paymentservice.domain.payment.domain.repository;
+
+import com.irum.paymentservice.domain.payment.domain.entity.Payment;
+import java.util.List;
+import java.util.UUID;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
+
+@Repository
+public interface PaymentRepository extends JpaRepository<Payment, UUID> {
+
+    // 실제 값이 변경된 행의 개수가 반환
+    @Modifying(clearAutomatically = true)
+    @Query("UPDATE Payment p SET p.paymentStatus = 'FAILED' WHERE p.paymentId IN :paymentIds")
+    int updateStatusToFailedByIds(@Param("paymentIds") List<UUID> paymentIds);
+}

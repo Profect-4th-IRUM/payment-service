@@ -26,7 +26,10 @@ public class PaymentInternalService {
     private final MemberUtil memberUtil;
 
     public UUID preparePayment(CreatePaymentRequest request) {
+        log.info("[요청] payment request: {}", request.toString());
+
         Long memberId = memberUtil.getCurrentMemberId();
+        log.info("Creating payment request member: {}", memberId);
 
         Payment payment =
                 Payment.builder()
@@ -36,7 +39,10 @@ public class PaymentInternalService {
                         .paymentStatus(PaymentStatus.PENDING)
                         .paymentCorp(PaymentCorp.valueOf(request.paymentCorp().toString()))
                         .build();
+        log.info("[비즈니스] payment 생성: {}", payment);
+
         Payment savedPayment = paymentRepository.save(payment);
+        log.info("[DB] payment 저장: {}", savedPayment.getPaymentId());
         return savedPayment.getPaymentId();
     }
 

@@ -16,7 +16,7 @@ import org.springframework.stereotype.Component;
 @Slf4j
 public class TosspaymentsAPI {
     private final TossProperties tossProperties;
-    private final TosspaymentsClient tosspaymentsAPI;
+    private final TosspaymentsClient tosspaymentsClient;
 
     public TossPaymentsResponse confirmPayment(PaymentRequest request, int paymentAmount) {
         Base64.Encoder encoder = Base64.getEncoder();
@@ -29,6 +29,6 @@ public class TosspaymentsAPI {
                 new TossPaymentsRequest(
                         request.tossPaymentKey(), request.tossOrderId(), paymentAmount);
         log.info("Toss Payment Request: {}", tossPaymentsRequest.toString());
-        return tosspaymentsAPI.confirmPayment(authorizations, tossPaymentsRequest);
+        return tosspaymentsClient.confirmPayment(authorizations, tossPaymentsRequest);
     }
 }

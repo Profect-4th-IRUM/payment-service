@@ -12,14 +12,12 @@ import com.irum.paymentservice.domain.payment.domain.repository.PaymentRepositor
 import com.irum.paymentservice.domain.payment.dto.request.PaymentRequest;
 import com.irum.paymentservice.domain.payment.dto.response.PaymentResponse;
 import com.irum.paymentservice.domain.payment.producer.PaymentEventProducer;
+import com.irum.paymentservice.global.exception.business.PaymentRejectedException;
 import com.irum.paymentservice.global.exception.errorcode.PaymentErrorCode;
 import com.irum.paymentservice.global.util.MemberUtil;
 import com.irum.paymentservice.openfeign.order.OrderAPI;
 import com.irum.paymentservice.openfeign.toss.TosspaymentsAPI;
 import com.irum.paymentservice.openfeign.toss.dto.TossPaymentsResponse;
-import feign.FeignException;
-import feign.Request;
-import java.util.Collections;
 import java.util.Optional;
 import java.util.UUID;
 import org.junit.jupiter.api.BeforeEach;
@@ -155,17 +153,9 @@ public class PaymentServiceTest {
         when(payment.getIdempotencyKey()).thenReturn(TEST_IDEMPOTENCY_KEY);
 
         // toss 호출 에러
-        Request dummyRequest =
-                Request.create(
-                        Request.HttpMethod.POST,
-                        "http://mock-toss-api/confirm",
-                        Collections.emptyMap(),
-                        (byte[]) null,
-                        null);
         when(tosspaymentsAPI.confirmPayment(
                         any(PaymentRequest.class), eq(TEST_AMOUNT), eq(TEST_IDEMPOTENCY_KEY)))
-                .thenThrow(
-                        new FeignException.InternalServerError("결제실패", dummyRequest, null, null));
+                .thenThrow(new PaymentRejectedException("결제실패"));
 
         // when then
         assertThatThrownBy(() -> paymentService.createPayment(paymentRequest))

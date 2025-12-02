@@ -1,7 +1,5 @@
-package com.irum.paymentservice.openfeign.toss.error;
+package com.irum.paymentservice.openfeign.toss.decoder;
 
-import com.fasterxml.jackson.core.exc.StreamReadException;
-import com.fasterxml.jackson.databind.DatabindException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.irum.paymentservice.global.exception.business.PaymentAlreadyProcessedException;
 import com.irum.paymentservice.global.exception.business.PaymentRejectedException;
@@ -12,7 +10,6 @@ import feign.codec.ErrorDecoder;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -30,10 +27,10 @@ public class TossPaymentErrorDecoder implements ErrorDecoder {
 
         // 응답 파싱
         TossPaymentsErrorResponse errorResponse = parseErrorResponse(response);
-        String errorCode = (errorResponse != null && errorResponse.errorDetail() != null) ?
-                errorResponse.errorDetail().code() : "UNKNOWN";
-        String errorMessage = (errorResponse != null && errorResponse.errorDetail() != null) ?
-                errorResponse.errorDetail().message() : "No message";
+        String errorCode = (errorResponse != null) ?
+                errorResponse.code() : "UNKNOWN";
+        String errorMessage = (errorResponse != null) ?
+                errorResponse.message() : "No message";
 
         if (status.is5xxServerError()) {
             log.warn("[Toss] Server Error: [{}]: code = {}, message = {}", response.status(), errorCode, errorMessage);

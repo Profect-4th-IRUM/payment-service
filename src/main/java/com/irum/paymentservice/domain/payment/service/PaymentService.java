@@ -10,6 +10,9 @@ import com.irum.paymentservice.domain.payment.domain.repository.PaymentRepositor
 import com.irum.paymentservice.domain.payment.dto.request.PaymentRequest;
 import com.irum.paymentservice.domain.payment.dto.response.PaymentResponse;
 import com.irum.paymentservice.domain.payment.producer.PaymentEventProducer;
+import com.irum.paymentservice.global.exception.business.PaymentAlreadyProcessedException;
+import com.irum.paymentservice.global.exception.business.PaymentRejectedException;
+import com.irum.paymentservice.global.exception.business.PaymentTossServerException;
 import com.irum.paymentservice.global.exception.errorcode.GlobalErrorCode;
 import com.irum.paymentservice.global.exception.errorcode.PaymentErrorCode;
 import com.irum.paymentservice.global.util.MemberUtil;
@@ -61,8 +64,14 @@ public class PaymentService {
             log.info("[외부] paymentPaidEvent 발행 완료");
 
             return new PaymentResponse(payment.getAmount());
-        } catch (FeignException e) {
-            // 추후에 Feign client error decoder로 변환하면 좋을 듯
+        } catch (PaymentAlreadyProcessedException e) {
+            // 중복된 요청
+            log.info("중복된 결제 요청입니다: {}", e.getMessage());
+            return new PaymentResponse(payment.getAmount());
+
+        } catch (PaymentRejectedException | PaymentTossServerException e) {
+            // 재시도 대상이 아니거나, 재시도 횟수 초과시
+            log.warn("결제 승인 실패 {}", e.getMessage());
 
             // 상태 업데이트
             paymentStatusService.updatePaymentStatusFailed(payment.getPaymentId());

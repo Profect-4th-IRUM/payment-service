@@ -1,9 +1,8 @@
 package com.irum.paymentservice.openfeign.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.irum.paymentservice.openfeign.toss.error.TossPaymentErrorDecoder;
+import com.irum.paymentservice.openfeign.toss.decoder.TossPaymentErrorDecoder;
 import feign.Logger;
-import feign.RetryableException;
 import feign.Retryer;
 import feign.codec.ErrorDecoder;
 import lombok.RequiredArgsConstructor;

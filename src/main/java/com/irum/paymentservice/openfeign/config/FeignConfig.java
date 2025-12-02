@@ -5,17 +5,15 @@ import com.irum.paymentservice.openfeign.toss.decoder.TossPaymentErrorDecoder;
 import feign.Logger;
 import feign.Retryer;
 import feign.codec.ErrorDecoder;
+import java.util.concurrent.TimeUnit;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-
-import java.util.concurrent.TimeUnit;
 
 @Configuration
 @RequiredArgsConstructor
 public class FeignConfig {
     private final ObjectMapper objectMapper;
-
 
     @Bean
     Logger.Level feignLoggerLevel() {

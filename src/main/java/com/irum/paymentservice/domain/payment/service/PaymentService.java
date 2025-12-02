@@ -18,7 +18,6 @@ import com.irum.paymentservice.global.exception.errorcode.PaymentErrorCode;
 import com.irum.paymentservice.global.util.MemberUtil;
 import com.irum.paymentservice.openfeign.toss.TosspaymentsAPI;
 import com.irum.paymentservice.openfeign.toss.dto.TossPaymentsResponse;
-import feign.FeignException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;

@@ -7,12 +7,11 @@ import com.irum.paymentservice.global.exception.business.PaymentTossServerExcept
 import com.irum.paymentservice.openfeign.toss.dto.TossPaymentsErrorResponse;
 import feign.Response;
 import feign.codec.ErrorDecoder;
+import java.io.IOException;
+import java.io.InputStream;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
-
-import java.io.IOException;
-import java.io.InputStream;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -20,30 +19,37 @@ public class TossPaymentErrorDecoder implements ErrorDecoder {
     private final ObjectMapper objectMapper;
     private final ErrorDecoder defaultErrorDecoder = new Default();
 
-
     @Override
     public Exception decode(String methodKey, Response response) {
         HttpStatus status = HttpStatus.resolve(response.status());
 
         // 응답 파싱
         TossPaymentsErrorResponse errorResponse = parseErrorResponse(response);
-        String errorCode = (errorResponse != null) ?
-                errorResponse.code() : "UNKNOWN";
-        String errorMessage = (errorResponse != null) ?
-                errorResponse.message() : "No message";
+        String errorCode = (errorResponse != null) ? errorResponse.code() : "UNKNOWN";
+        String errorMessage = (errorResponse != null) ? errorResponse.message() : "No message";
 
         if (status.is5xxServerError()) {
-            log.warn("[Toss] Server Error: [{}]: code = {}, message = {}", response.status(), errorCode, errorMessage);
-            return new PaymentTossServerException(response.status(), errorMessage, response.request());
+            log.warn(
+                    "[Toss] Server Error: [{}]: code = {}, message = {}",
+                    response.status(),
+                    errorCode,
+                    errorMessage);
+            return new PaymentTossServerException(
+                    response.status(), errorMessage, response.request());
         } else if (status.is4xxClientError()) {
-            if ( status == HttpStatus.CONFLICT || status == HttpStatus.UNPROCESSABLE_ENTITY || "ALREADY_PROCESSED_PAYMENT".equals(errorCode)) {
-                log.info("[Toss] 중복된 요청입니다. : [{}] code = {}, message = {}", response.status(), errorCode, errorMessage);
+            if (status == HttpStatus.CONFLICT
+                    || status == HttpStatus.UNPROCESSABLE_ENTITY
+                    || "ALREADY_PROCESSED_PAYMENT".equals(errorCode)) {
+                log.info(
+                        "[Toss] 중복된 요청입니다. : [{}] code = {}, message = {}",
+                        response.status(),
+                        errorCode,
+                        errorMessage);
                 return new PaymentAlreadyProcessedException(errorMessage);
             }
             log.warn("[Toss] 결제 거절({}): code = {}, message = {}", status, errorCode, errorMessage);
             return new PaymentRejectedException(errorMessage);
         }
-
 
         return defaultErrorDecoder.decode(methodKey, response);
     }
@@ -59,6 +65,5 @@ public class TossPaymentErrorDecoder implements ErrorDecoder {
             log.error("[Toss] Error Response Parsing Failed", e);
             return null;
         }
-
     }
 }

@@ -83,9 +83,7 @@ public class PaymentService {
             throw new CommonException(PaymentErrorCode.PAYMENT_ERROR);
         } catch (Exception e) {
             log.error(
-                    " 예기치 못한 오류. message = {}, class = {}",
-                    e.getMessage(),
-                    e.getClass().toString());
+                    "예기치 못한 오류. message = {}, class = {}", e.getMessage(), e.getClass().toString());
             throw new CommonException(PaymentErrorCode.PAYMENT_ERROR);
         }
     }

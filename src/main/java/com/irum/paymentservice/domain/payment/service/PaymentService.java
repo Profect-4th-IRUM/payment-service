@@ -9,6 +9,10 @@ import com.irum.paymentservice.domain.payment.domain.entity.enums.PaymentStatus;
 import com.irum.paymentservice.domain.payment.domain.repository.PaymentRepository;
 import com.irum.paymentservice.domain.payment.dto.request.PaymentRequest;
 import com.irum.paymentservice.domain.payment.dto.response.PaymentResponse;
+import com.irum.paymentservice.domain.payment.event.PaymentFailedEvent;
+import com.irum.paymentservice.domain.payment.event.PaymentFailedOutboxEvent;
+import com.irum.paymentservice.domain.payment.event.PaymentPaidEvent;
+import com.irum.paymentservice.domain.payment.event.PaymentPaidOutboxEvent;
 import com.irum.paymentservice.domain.payment.producer.PaymentEventProducer;
 import com.irum.paymentservice.global.exception.business.PaymentAlreadyProcessedException;
 import com.irum.paymentservice.global.exception.business.PaymentRejectedException;
@@ -20,6 +24,7 @@ import com.irum.paymentservice.openfeign.toss.TosspaymentsAPI;
 import com.irum.paymentservice.openfeign.toss.dto.TossPaymentsResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -33,6 +38,8 @@ public class PaymentService {
     private final MemberUtil memberUtil;
     private final PaymentStatusService paymentStatusService;
     private final PaymentEventProducer paymentEventProducer;
+
+    private final ApplicationEventPublisher eventPublisher;
 
     public PaymentResponse createPayment(PaymentRequest request) {
         log.info("[요청] payment request: {}", request.toString());
@@ -59,8 +66,12 @@ public class PaymentService {
             payment.updateToPaid(tossPaymentsResponse);
             log.info("[DB] Payment Paid 상태 업데이트 완료");
 
-            paymentEventProducer.sendPaymentPaidEvent(OrderStatus.PREPARING, request.orderId());
-            log.info("[외부] paymentPaidEvent 발행 완료");
+            PaymentPaidEvent event = PaymentPaidEvent.from(OrderStatus.PREPARING, request.orderId());
+            eventPublisher.publishEvent(new PaymentPaidOutboxEvent(payment.getPaymentId(), event));
+            log.info("[내부] PaymentPaidOutboxEvent 발행 완료");
+
+//            paymentEventProducer.sendPaymentPaidEvent(OrderStatus.PREPARING, request.orderId());
+//            log.info("[외부] PaymentPaidEvent 발행 완료");
 
             return new PaymentResponse(payment.getAmount());
         } catch (PaymentAlreadyProcessedException e) {
@@ -75,10 +86,14 @@ public class PaymentService {
             // 상태 업데이트
             paymentStatusService.updatePaymentStatusFailed(payment.getPaymentId());
 
-            // order, orderdetail 상태 업데이트, 재고 롤백, 쿠폰 롤백
-            paymentEventProducer.sendPaymentFailedEvent(
-                    request.orderId(), request.paymentId(), OrderStatus.FAILED);
-            log.info("[외부] paymentFailedEvent 발행 완료");
+            PaymentFailedEvent event = PaymentFailedEvent.from(request.orderId(), request.paymentId(), OrderStatus.FAILED);
+            eventPublisher.publishEvent(new PaymentFailedOutboxEvent(payment.getPaymentId(), event));
+            log.info("[내부] PaymentPaidOutboxEvent 발행 완료");
+
+//            // order, orderdetail 상태 업데이트, 재고 롤백, 쿠폰 롤백
+//            paymentEventProducer.sendPaymentFailedEvent(
+//                    request.orderId(), request.paymentId(), OrderStatus.FAILED);
+//            log.info("[외부] paymentFailedEvent 발행 완료");
 
             throw new CommonException(PaymentErrorCode.PAYMENT_ERROR);
         } catch (Exception e) {

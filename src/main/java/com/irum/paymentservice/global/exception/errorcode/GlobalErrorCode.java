@@ -12,6 +12,7 @@ public enum GlobalErrorCode implements BaseErrorCode {
     INVALID_CURSOR(HttpStatus.BAD_REQUEST, "리소스를 조회할 수 없습니다."),
     EMPTY_REQUEST(HttpStatus.BAD_REQUEST, "비어있는 요청입니다."),
     MEMBER_SERVICE_ERROR(HttpStatus.SERVICE_UNAVAILABLE, "member-service error"),
+    JSON_PROCESSING_EXCEPTION(HttpStatus.INTERNAL_SERVER_ERROR, "json processing exception"),
     ;
 
     private final HttpStatus httpStatus;

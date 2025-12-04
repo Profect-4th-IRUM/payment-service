@@ -2,6 +2,9 @@ databaseChangeLog:
   - include:
       file: changes/ddl/001-create-table-payment.yaml
       relativeToChangelogFile: true
+  - include:
+      file: changes/ddl/002-create-table-payment-outbox.yaml
+      relativeToChangelogFile: true
 #  - include:
 #      file: changes/legacy/002-insert-default-payments.yaml
 #      relativeToChangelogFile: true

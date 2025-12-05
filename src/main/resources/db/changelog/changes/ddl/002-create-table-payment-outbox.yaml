@@ -20,13 +20,13 @@ databaseChangeLog:
                     nullable: false
                   remarks: "이벤트 타입 (예: failed, paid)"
               - column:
-                  name: aggregatetype
+                  name: aggregate_type
                   type: VARCHAR(255)
                   constraints:
                     nullable: false
                   remarks: "도메인 (예: payment)"
               - column:
-                  name: aggregateid
+                  name: aggregate_id
                   type: VARCHAR(255)
                   constraints:
                     nullable: false

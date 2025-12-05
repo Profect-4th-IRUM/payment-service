@@ -84,11 +84,9 @@ public class PaymentService {
             log.warn("결제 승인 실패 : {}", e.getMessage());
 
             // 상태 업데이트
-            paymentStatusService.updatePaymentStatusFailed(payment.getPaymentId());
+            paymentStatusService.updatePaymentStatusFailed(payment.getPaymentId(), request);
 
-            PaymentFailedEvent event = PaymentFailedEvent.from(request.orderId(), request.paymentId(), OrderStatus.FAILED);
-            eventPublisher.publishEvent(new PaymentFailedOutboxEvent(payment.getPaymentId(), event));
-            log.info("[내부] PaymentFailedOutboxEvent 발행 완료");
+
 
 //            // order, orderdetail 상태 업데이트, 재고 롤백, 쿠폰 롤백
 //            paymentEventProducer.sendPaymentFailedEvent(

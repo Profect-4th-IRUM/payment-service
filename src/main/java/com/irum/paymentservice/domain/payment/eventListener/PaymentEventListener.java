@@ -30,7 +30,7 @@ public class PaymentEventListener {
     @TransactionalEventListener(phase = TransactionPhase.BEFORE_COMMIT)
     public void handlePaymentFailedOutboxEvent(PaymentFailedOutboxEvent event) {
         saveOutbox(event.payload(), event.paymentId().toString(), "failed");
-        log.info("[DB] 결제 성공 Outbox 저장 완료. paymentId={}", event.paymentId());
+        log.info("[DB] 결제 실패 Outbox 저장 완료. paymentId={}", event.paymentId());
     }
 
     private void saveOutbox(Object payloadObj, String paymentId, String status){

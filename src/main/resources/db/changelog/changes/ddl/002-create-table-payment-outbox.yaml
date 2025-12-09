@@ -1,6 +1,6 @@
 databaseChangeLog:
   - changeSet:
-      id: create-table-payment-outbox-1
+      id: create-table-payment-1
       author: hyeonji91
       comment: "Outbox 패턴 처리를 위한 p_payment_outbox 테이블 생성"
       changes:

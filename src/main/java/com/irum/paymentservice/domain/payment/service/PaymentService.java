@@ -86,8 +86,6 @@ public class PaymentService {
             // 상태 업데이트
             paymentStatusService.updatePaymentStatusFailed(payment.getPaymentId(), request);
 
-
-
 //            // order, orderdetail 상태 업데이트, 재고 롤백, 쿠폰 롤백
 //            paymentEventProducer.sendPaymentFailedEvent(
 //                    request.orderId(), request.paymentId(), OrderStatus.FAILED);

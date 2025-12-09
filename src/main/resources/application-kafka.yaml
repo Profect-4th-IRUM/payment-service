@@ -7,9 +7,6 @@ spring:
 
     properties:
       security.protocol: SSL
-      ssl.truststore.type: JKS
-      ssl.truststore.location: /etc/ssl/certs/java/cacerts
-      ssl.truststore.password: changeit
 
     producer:
       # 메시지 키는 String

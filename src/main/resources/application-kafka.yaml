@@ -4,6 +4,13 @@ spring:
       on-profile: "kafka"
   kafka:
     bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS}
+
+    properties:
+      security.protocol: SSL
+      ssl.truststore.type: JKS
+      ssl.truststore.location: /etc/ssl/certs/java/cacerts
+      ssl.truststore.password: changeit
+
     producer:
       # 메시지 키는 String
       key-serializer: org.apache.kafka.common.serialization.StringSerializer

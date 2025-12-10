@@ -3,9 +3,9 @@ spring:
     name: payment-service
   profiles:
     group:
-      "local": "local, toss, default-datasource, default-db-management, default-redis, openfeign, actuator"
-      "docker": "docker, toss, default-datasource, default-db-management, default-redis, openfeign, actuator"
-      "prod": "prod, toss, prod-datasource, prod-db-management, prod-cache-redis, openfeign, actuator"
+      "local": "local, toss, default-datasource, default-db-management, default-redis, openfeign, actuator, base-url, kafka"
+      "docker": "docker, toss, default-datasource, default-db-management, default-redis, openfeign, actuator, base-url, kafka"
+      "prod": "prod, toss, prod-datasource, prod-db-management, prod-cache-redis, openfeign, actuator, base-url, kafka"
     active: ${PROFILE_ACTIVE:local}
 
 #  config:

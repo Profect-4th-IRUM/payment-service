@@ -1,0 +1,34 @@
+spring:
+  config:
+    activate:
+      on-profile: "kafka"
+  kafka:
+    bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS}
+
+    properties:
+      security.protocol: SSL
+
+    producer:
+      # 메시지 키는 String
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      # 메시지 값은 json
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+      properties:
+        spring.json:
+          type.mapping: |
+            paymentPaidEvent: com.irum.paymentservice.domain.payment.event.PaymentPaidEvent,
+            paymentFailedEvent: com.irum.paymentservice.domain.payment.event.PaymentFailedEvent
+      acks: all
+    partition: ${NUM_OF_PARTITION}
+    replica: ${NUM_OF_REPLICA}
+    topics:
+      payment-paid: ${PAYMENT_PAID_TOPIC_NAME}
+      payment-failed: ${PAYMENT_FAILED_TOPIC_NAME}
+
+
+logging:
+  level:
+    com.adjh.springbootkafka: DEBUG
+    org:
+      apache.kafka: INFO
+      springframework.kafka: INFO

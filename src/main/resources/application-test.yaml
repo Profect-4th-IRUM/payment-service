@@ -8,3 +8,16 @@ spring:
     jpa:
       hibernate:
         ddl-auto: create-drop
+
+
+service:
+  member:
+    base_url: localhost:8081
+  product:
+    base_url: localhost:8082
+  order:
+    base_url: localhost:8083
+  payment:
+    base_url: localhost:8084
+  ai:
+    base-url: localhost:8085

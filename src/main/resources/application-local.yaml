@@ -1,0 +1,6 @@
+spring:
+  config:
+    activate:
+      on-profile: "local"
+server:
+  port: ${PAYMENT_PORT:8084}

@@ -114,16 +114,16 @@ dependencies {
     testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 
-    // Config-Server
-    implementation 'org.springframework.cloud:spring-cloud-starter-config'
+//    // Config-Server
+//    implementation 'org.springframework.cloud:spring-cloud-starter-config'
 
     // Actuator
     implementation 'org.springframework.boot:spring-boot-starter-actuator'
     implementation 'io.micrometer:micrometer-core'
     implementation 'io.micrometer:micrometer-registry-prometheus'
 
-    // Service-Discovery
-    implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-client'
+//    // Service-Discovery
+//    implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-client'
 
     //liquibase
     implementation 'org.liquibase:liquibase-core'
